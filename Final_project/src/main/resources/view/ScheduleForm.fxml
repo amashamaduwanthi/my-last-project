@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ScedulePanel" prefHeight="900.0" prefWidth="1411.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.scheduleFormController">
+   <children>
+      <Label layoutX="35.0" layoutY="84.0" prefHeight="759.0" prefWidth="1343.0" style="-fx-background-color: #f1f2f6#ff3333;" textFill="#575555" />
+      <Label layoutX="80.0" layoutY="214.0" prefHeight="236.0" prefWidth="644.0" style="-fx-background-color: lightGrey; -fx-background-radius: 20;" />
+      <Label layoutX="98.0" layoutY="30.0" prefHeight="26.0" prefWidth="134.0" text="Schedule" textFill="#b92c2c">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="98.0" layoutY="147.0" onAction="#btnAddSceduleOnAction" prefHeight="31.0" prefWidth="72.0" style="-fx-background-color: #12CBC4;" text="Save" />
+      <JFXButton buttonType="RAISED" layoutX="258.0" layoutY="147.0" onAction="#btnDeleteOnAction" prefHeight="31.0" prefWidth="82.0" style="-fx-background-color: red;" text="Delete" textFill="#e8dfdf" />
+      <JFXButton buttonType="RAISED" layoutX="428.0" layoutY="147.0" onAction="#btnUpdateOnAction" prefHeight="31.0" prefWidth="82.0" style="-fx-background-color: #ff794d;" text="Update" />
+      <JFXButton buttonType="RAISED" layoutX="1241.0" layoutY="44.0" onAction="#btnSearchOnAction" prefHeight="31.0" prefWidth="63.0" style="-fx-background-color: lightgreen;" text="Serach" />
+      <TextField fx:id="txtSeach" layoutX="1038.0" layoutY="46.0" prefHeight="31.0" prefWidth="194.0" promptText="Search here" />
+      <TextField fx:id="txtDescription" layoutX="432.0" layoutY="282.0" prefHeight="51.0" prefWidth="200.0" promptText="Description" style="-fx-background-radius: 10;" />
+      <TextField fx:id="txtDuration" layoutX="116.0" layoutY="353.0" prefHeight="51.0" prefWidth="200.0" promptText="Duration" style="-fx-background-radius: 10;" />
+      <JFXComboBox fx:id="cmbHallId" layoutX="451.0" layoutY="363.0" onAction="#btnCmbHallIdOnAction" prefHeight="40.0" prefWidth="186.0" />
+      <Label layoutX="85.0" layoutY="498.0" prefHeight="303.0" prefWidth="644.0" style="-fx-background-color: lightGrey; -fx-background-radius: 20;" />
+      <Label layoutX="147.0" layoutY="503.0" prefHeight="51.0" prefWidth="244.0" text="Hall Details" textFill="#363535">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+      </Label>
+      <Label layoutX="189.0" layoutY="585.0" prefHeight="40.0" prefWidth="186.0" text="Name" textFill="#4a4646">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label layoutX="136.0" layoutY="653.0" prefHeight="40.0" prefWidth="186.0" text="Availability" textFill="#4a4848">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label layoutX="159.0" layoutY="718.0" prefHeight="40.0" prefWidth="186.0" text="Capacity" textFill="#3c3939">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblHallName" layoutX="314.0" layoutY="590.0" prefHeight="31.0" prefWidth="232.0" style="-fx-background-color: white;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCapacity" layoutX="309.0" layoutY="723.0" prefHeight="31.0" prefWidth="232.0" style="-fx-background-color: white;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblAvailability" layoutX="314.0" layoutY="658.0" prefHeight="31.0" prefWidth="232.0" style="-fx-background-color: white;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="845.0" layoutY="764.0" onAction="#btnScheduledOnAction" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: pink;" text="Schedule" />
+      <Label layoutX="110.0" layoutY="214.0" prefHeight="51.0" prefWidth="244.0" text=" Details" textFill="#363535">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblSceduleId" layoutX="118.0" layoutY="279.0" prefHeight="51.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 10;" />
+      <TableView fx:id="tblSchedule" layoutX="768.0" layoutY="223.0" prefHeight="509.0" prefWidth="545.0">
+        <columns>
+          <TableColumn fx:id="colSceduleId" prefWidth="123.0" text="Schedule Id" />
+          <TableColumn fx:id="colDuration" prefWidth="205.0" text="Duration" />
+            <TableColumn fx:id="colDescription" prefWidth="216.0" text="Description" />
+        </columns>
+      </TableView>
+      <ImageView fitHeight="63.0" fitWidth="72.0" layoutX="16.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-schedules-68.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

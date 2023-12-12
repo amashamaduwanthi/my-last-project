@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="securityPanel" prefHeight="822.0" prefWidth="1385.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.SecurityFormController">
+   <children>
+      <Label layoutX="389.0" layoutY="249.0" prefHeight="194.0" prefWidth="538.0" style="-fx-background-color: #f1f2f6#ff3333;" />
+      <Label layoutX="531.0" layoutY="289.0" prefHeight="45.0" prefWidth="226.0" text="Enter your Password">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="792.0" layoutY="392.0" onAction="#btnOkOnAction" prefHeight="24.0" prefWidth="98.0" style="-fx-background-color: pink;" text="OK">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </JFXButton>
+      <PasswordField fx:id="pwPasword" layoutX="531.0" layoutY="346.0" prefHeight="45.0" prefWidth="226.0" promptText="password" />
+   </children>
+</AnchorPane>

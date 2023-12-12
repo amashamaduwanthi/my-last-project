@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="panel2" prefHeight="900.0" prefWidth="1411.0" style="-fx-background-radius: 30;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.lecturerFormController">
+   <children>
+      <Label layoutX="43.0" layoutY="81.0" prefHeight="783.0" prefWidth="1331.0" style="-fx-background-color: #f1f2f6#ff3333;" />
+      <Label layoutX="92.0" layoutY="116.0" prefHeight="664.0" prefWidth="390.0" style="-fx-background-color: lightGray; -fx-background-radius: 20;" />
+      <JFXButton buttonType="RAISED" layoutX="694.0" layoutY="107.0" onAction="#btnAddOnAction" prefHeight="45.0" prefWidth="92.0" style="-fx-background-color: #12CBC4;" text="ADD" />
+      <JFXButton buttonType="RAISED" layoutX="878.0" layoutY="107.0" onAction="#btnUpdateOnAction" prefHeight="45.0" prefWidth="121.0" style="-fx-background-color: #ff794d;" text="update" />
+      <JFXButton buttonType="RAISED" layoutX="1097.0" layoutY="110.0" onAction="#btnDeleteOnAction" prefHeight="45.0" prefWidth="101.0" style="-fx-background-color: red;" text="delete" textFill="#fcefef" />
+      <TextField fx:id="txtName" layoutX="118.0" layoutY="279.0" prefHeight="45.0" prefWidth="319.0" promptText="Name" />
+      <TextField fx:id="txtTel" layoutX="117.0" layoutY="461.0" prefHeight="45.0" prefWidth="319.0" promptText="Tel" />
+      <Label layoutX="120.0" layoutY="34.0" prefHeight="31.0" prefWidth="148.0" text="Lecturer" textFill="#6f3535">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="55.0" fitWidth="59.0" layoutX="45.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-lecturer-50.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="740.0" layoutY="732.0" prefHeight="23.0" prefWidth="343.0" text="View subjects click Here" textFill="#300a43">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnClick" buttonType="RAISED" layoutX="890.0" layoutY="788.0" onAction="#btnClickOnAction" prefHeight="45.0" prefWidth="92.0" stylesheets="@../style/buttons.css" text="Click" textFill="#862222" />
+      <TextField fx:id="txtAddress" layoutX="118.0" layoutY="365.0" prefHeight="45.0" prefWidth="319.0" promptText="Address" />
+      <TableView fx:id="tblLec" layoutX="540.0" layoutY="214.0" prefHeight="478.0" prefWidth="803.0" style="-fx-background-radius: 20; -fx-background-color: lightblue;">
+        <columns>
+          <TableColumn fx:id="colId" prefWidth="133.0" text="Id" />
+          <TableColumn fx:id="colName" prefWidth="241.0" text="Name" />
+            <TableColumn fx:id="colTel" prefWidth="177.0" text="Tel" />
+            <TableColumn fx:id="colAddress" prefWidth="251.0" text="Adress" />
+        </columns>
+      </TableView>
+      <TextField fx:id="txtNic" layoutX="118.0" layoutY="565.0" prefHeight="45.0" prefWidth="319.0" promptText="NIC" />
+      <TextField fx:id="txtUni" layoutX="118.0" layoutY="651.0" prefHeight="45.0" prefWidth="319.0" promptText="University" />
+      <Label layoutX="119.0" layoutY="145.0" prefHeight="16.0" prefWidth="183.0" text="Details">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblLecId" layoutX="118.0" layoutY="211.0" prefHeight="45.0" prefWidth="319.0" style="-fx-background-color: white;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+      <TextField fx:id="txtLectId" layoutX="897.0" layoutY="22.0" prefHeight="35.0" prefWidth="236.0" promptText="Search Id" />
+      <JFXButton buttonType="RAISED" layoutX="1167.0" layoutY="25.0" onAction="#btnSearchlecturerOnAction" prefHeight="35.0" prefWidth="112.0" style="-fx-background-color: #7bed9f;" text="Search" />
+   </children>
+</AnchorPane>

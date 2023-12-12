@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1411.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.subjectFormController">
+   <children>
+      <Label layoutX="63.0" layoutY="90.0" prefHeight="806.0" prefWidth="1283.0" style="-fx-background-color: #f1f2f6#ff3333;" />
+      <Label layoutX="644.0" layoutY="166.0" prefHeight="342.0" prefWidth="665.0" style="-fx-background-color: lightGrey; -fx-background-radius: 20;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="107.0" layoutY="173.0" prefHeight="342.0" prefWidth="466.0" style="-fx-background-color: lightgrey; -fx-background-radius: 20;" />
+      <Label layoutX="119.0" layoutY="35.0" prefHeight="39.0" prefWidth="178.0" text="Subjects">
+         <font>
+            <Font name="System Bold" size="31.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="691.0" layoutY="105.0" onAction="#btnAddOnAction" prefHeight="39.0" prefWidth="94.0" style="-fx-background-color: #12CBC4;" text="Add" />
+      <JFXButton buttonType="RAISED" layoutX="889.0" layoutY="106.0" onAction="#btnUpdateOnAction" prefHeight="39.0" prefWidth="94.0" style="-fx-background-color: #ff794d;" text="update" />
+      <JFXButton buttonType="RAISED" layoutX="1094.0" layoutY="107.0" onAction="#btndeleteOnAction" prefHeight="39.0" prefWidth="94.0" style="-fx-background-color: #EA2027#ff3333#ff3333;" text="Delete" textFill="#fcf0f0" />
+      <TextField fx:id="txtName" layoutX="368.0" layoutY="298.0" prefHeight="39.0" prefWidth="171.0" promptText="Name" style="-fx-background-radius: 10;" />
+      <ComboBox fx:id="cmbLecId" layoutX="648.0" layoutY="252.0" onAction="#cmbLectIdOnAction" prefHeight="54.0" prefWidth="178.0" promptText="lec_id" />
+      <ComboBox fx:id="cmbSubId" layoutX="655.0" layoutY="351.0" onAction="#btnCmbSubIdOnAction" prefHeight="54.0" prefWidth="178.0" promptText="sub_id" />
+      <TableView fx:id="tableColoum" layoutX="131.0" layoutY="550.0" prefHeight="328.0" prefWidth="977.0">
+        <columns>
+          <TableColumn fx:id="colLecId" prefWidth="180.0" text="lecturer Id" />
+          <TableColumn fx:id="colLecName" prefWidth="271.0" text="Lecturer Name" />
+            <TableColumn fx:id="colSubId" prefWidth="211.0" text="Subject Id" />
+            <TableColumn fx:id="colSubName" prefWidth="341.0" text="Subject Name" />
+
+        </columns>
+      </TableView>
+      <ImageView fitHeight="61.0" fitWidth="84.0" layoutX="32.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-subject-32.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="txtdescription" layoutX="372.0" layoutY="390.0" prefHeight="39.0" prefWidth="171.0" promptText="Description" style="-fx-background-radius: 10;" />
+      <Label fx:id="lblLecturerName" layoutX="1074.0" layoutY="254.0" prefHeight="39.0" prefWidth="171.0" style="-fx-background-color: white;" textFill="#9e2e2e">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font></Label>
+      <Label fx:id="lblSubjectName" layoutX="1073.0" layoutY="358.0" prefHeight="39.0" prefWidth="171.0" style="-fx-background-color: white;" textFill="#9e2e2e">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="205.0" layoutY="213.0" prefHeight="39.0" prefWidth="171.0" text="Subject id" textFill="#4d4747">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <Label layoutX="165.0" layoutY="298.0" prefHeight="39.0" prefWidth="217.0" text="Subject Name" textFill="#323030">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="184.0" layoutY="394.0" prefHeight="39.0" prefWidth="217.0" text="Description" textFill="#2f2c2c">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <Label layoutX="864.0" layoutY="358.0" prefHeight="39.0" prefWidth="217.0" text="Subject Name" textFill="#434141">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="849.0" layoutY="260.0" prefHeight="39.0" prefWidth="217.0" text="Lecturer Name" textFill="#403f3f">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <Label layoutX="655.0" layoutY="186.0" prefHeight="39.0" prefWidth="319.0" text="Lecturer Subject Details" textFill="#2c2b2b">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtSubId" layoutX="833.0" layoutY="26.0" prefHeight="39.0" prefWidth="217.0" promptText="search Subject Id" />
+      <JFXButton buttonType="RAISED" layoutX="1063.0" layoutY="28.0" onAction="#btnSearchOnAction" prefHeight="30.0" prefWidth="114.0" style="-fx-background-color: lightGreen;" text="Search" />
+      <Label fx:id="lblsubId" layoutX="368.0" layoutY="213.0" prefHeight="39.0" prefWidth="171.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="1000.0" layoutY="448.0" onAction="#btnSaveOnAction" prefHeight="39.0" prefWidth="128.0" style="-fx-background-color: pink;" text="Save" />
+   </children>
+</AnchorPane>

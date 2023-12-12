@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="882.0" prefWidth="1385.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.staffFormController">
+   <children>
+      <Label layoutX="60.0" layoutY="113.0" prefHeight="347.0" prefWidth="1221.0" style="-fx-background-color: #f1f2f6#ff3333 #f1f2f6#ff3333; -fx-background-radius: 20;" />
+      <Label layoutX="111.0" layoutY="35.0" prefHeight="31.0" prefWidth="126.0" text="Staff" textFill="#8f7731">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtSeachStaff" layoutX="426.0" layoutY="41.0" prefHeight="35.0" prefWidth="218.0" promptText="Search here" style="-fx-background-radius: 10;" />
+      <JFXButton buttonType="RAISED" layoutX="690.0" layoutY="41.0" onAction="#btnStaffSearchOnAction" prefHeight="35.0" prefWidth="72.0" style="-fx-background-color: lightgreen;" text="SEARCH" />
+      <JFXButton buttonType="RAISED" layoutX="1104.0" layoutY="137.0" onAction="#btnUpdateStaffOnAction" prefHeight="35.0" prefWidth="162.0" style="-fx-background-color: #12CBC4;" text="Update" />
+      <JFXButton buttonType="RAISED" layoutX="881.0" layoutY="131.0" onAction="#btnDeleteOnAction" prefHeight="42.0" prefWidth="162.0" style="-fx-background-color: red;" text="Delete" />
+      <TextField fx:id="txtUserName" layoutX="78.0" layoutY="253.0" prefHeight="42.0" prefWidth="362.0" promptText="UserName" style="-fx-background-radius: 10;" />
+      <TextField fx:id="txtPassword" layoutX="613.0" layoutY="253.0" prefHeight="42.0" prefWidth="354.0" promptText="Password" style="-fx-background-radius: 10;" />
+      <TextField fx:id="txtEmail" layoutX="78.0" layoutY="334.0" prefHeight="42.0" prefWidth="362.0" promptText="Email" style="-fx-background-radius: 10;" />
+      <TextField fx:id="txtType" layoutX="613.0" layoutY="327.0" prefHeight="42.0" prefWidth="354.0" promptText="Type" style="-fx-background-radius: 10;" />
+      <ImageView fitHeight="75.0" fitWidth="82.0" layoutX="22.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-employee-48.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tblStaff" layoutX="77.0" layoutY="481.0" prefHeight="311.0" prefWidth="1109.0" style="-fx-background-color: lightGrey;">
+        <columns>
+          <TableColumn fx:id="colStaffName" prefWidth="324.0" text="Staff name" />
+          <TableColumn fx:id="colPassword" prefWidth="438.0" text="Password" />
+            <TableColumn fx:id="colEmail" prefWidth="346.0" text="Email" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

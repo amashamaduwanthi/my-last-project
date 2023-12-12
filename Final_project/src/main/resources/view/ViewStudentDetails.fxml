@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="891.0" prefWidth="1205.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.ViewStudentController">
+   <children>
+      <AnchorPane layoutX="75.0" layoutY="89.0" prefHeight="776.0" prefWidth="1075.0" style="-fx-background-color: lightgrey; -fx-background-radius: 20;">
+         <children>
+            <TableView fx:id="tblViewStudent" layoutX="90.0" layoutY="78.0" prefHeight="648.0" prefWidth="898.0">
+              <columns>
+                <TableColumn fx:id="colId" prefWidth="105.0" text="Student ID" />
+                <TableColumn fx:id="colName" prefWidth="120.0" text="Student Name" />
+                  <TableColumn minWidth="0.0" prefWidth="0.0" text="C2" />
+                  <TableColumn fx:id="colAddress" prefWidth="141.0" text="Address" />
+                  <TableColumn fx:id="colEmail" minWidth="2.0" prefWidth="187.0" text="Email" />
+                  <TableColumn fx:id="colTel" minWidth="0.0" prefWidth="102.0" text="Contact No" />
+                  <TableColumn fx:id="colGender" minWidth="0.0" prefWidth="95.0" text="Gender" />
+                  <TableColumn fx:id="colDob" minWidth="0.0" prefWidth="147.0" text="Date Of Birth" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="75.0" layoutY="24.0" prefHeight="36.0" prefWidth="256.0" text="Student Details">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

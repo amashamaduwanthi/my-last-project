@@ -1,0 +1,60 @@
+#btnStaff {
+    -fx-background-color: #f5f5dc;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+}
+#btnLecturer{
+    -fx-background-color:	#f5f5dc;
+    -fx-background-radius: 10;
+    -fx-text-fill:#000000;
+}
+#btnClass{
+    -fx-background-color:	#f5f5dc;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+}
+#btnExam{
+    -fx-background-color:	#f5f5dc;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+}
+#btnPayment{
+    -fx-background-color:	#f5f5dc;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+}
+#btnStudent{
+    -fx-background-color:	#f5f5dc;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+}
+#btnBack{
+    -fx-background-color: #0d54c9;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+
+}
+#btnLogOut{
+    -fx-background-color: #ffff66;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+}
+#btnClick{
+    -fx-background-color: #c8ade7;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+}
+#btnAdd{
+    -fx-background-color:#0D54C9FF;
+}
+#btnReport{
+    -fx-background-color: #C8ADE7FF;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+    -fx-font-style: #bold;
+}
+#btnView{
+    -fx-background-color: #c8ade7;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+}

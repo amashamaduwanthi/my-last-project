@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1411.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.backdashboardFormController">
+   <children>
+      <AnchorPane fx:id="panel" layoutY="3.0" prefHeight="900.0" prefWidth="1411.0" style="-fx-background-color: ebebe0; -fx-background-radius: 20;">
+         <children>
+            <Label layoutX="44.0" layoutY="81.0" opacity="0.78" prefHeight="182.0" prefWidth="269.0" style="-fx-background-color: #ffccff; -fx-background-radius: 20;" />
+            <Label layoutX="369.0" layoutY="88.0" opacity="0.78" prefHeight="182.0" prefWidth="269.0" style="-fx-background-color: #ffccff; -fx-background-radius: 20;" />
+            <Label layoutX="706.0" layoutY="85.0" opacity="0.78" prefHeight="182.0" prefWidth="269.0" style="-fx-background-color: #ffccff; -fx-background-radius: 20;" />
+            <Label layoutX="1035.0" layoutY="89.0" opacity="0.78" prefHeight="182.0" prefWidth="269.0" style="-fx-background-color: #ffccff; -fx-background-radius: 20;" />
+            <Label layoutX="44.0" layoutY="329.0" prefHeight="481.0" prefWidth="1260.0" style="-fx-background-color: #f1f2f6;" />
+            <Label layoutX="917.0" layoutY="20.0" prefHeight="16.0" prefWidth="90.0" text="Date:">
+               <font>
+                  <Font name="Arial Black" size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbldate" layoutX="997.0" layoutY="24.0" prefHeight="35.0" prefWidth="194.0" textFill="#a81e1e">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <PieChart fx:id="piechartThigma" layoutX="183.0" layoutY="370.0" style="-fx-background-color: lightGrey;" />
+            <BarChart fx:id="barchart" layoutX="757.0" layoutY="370.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </BarChart>
+            <Label layoutX="134.0" layoutY="104.0" prefHeight="16.0" prefWidth="160.0" text="Total Staff">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalStaff" alignment="CENTER" contentDisplay="RIGHT" layoutX="157.0" layoutY="144.0" prefHeight="84.0" prefWidth="134.0" style="-fx-background-color: white; -fx-alignment: center;" text="   " textAlignment="CENTER" textFill="#d32e2e">
+               <font>
+                  <Font name="System Bold" size="34.0" />
+               </font></Label>
+            <ImageView fitHeight="61.0" fitWidth="66.0" layoutX="58.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-employee-48.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="433.0" layoutY="109.0" prefHeight="26.0" prefWidth="182.0" text="Total Student">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalStudent" layoutX="481.0" layoutY="149.0" prefHeight="84.0" prefWidth="134.0" style="-fx-background-color: white; -fx-alignment: center;" text="   " textAlignment="JUSTIFY" textFill="#eb4545">
+               <font>
+                  <Font name="System Bold" size="34.0" />
+               </font></Label>
+            <ImageView fitHeight="61.0" fitWidth="90.0" layoutX="381.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-student-48.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="766.0" layoutY="109.0" prefHeight="26.0" prefWidth="182.0" text="Total Lecturer">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalLecturer" layoutX="821.0" layoutY="150.0" prefHeight="84.0" prefWidth="134.0" style="-fx-background-color: white; -fx-alignment: center;" text="   " textAlignment="JUSTIFY" textFill="#d02424">
+               <font>
+                  <Font name="System Bold" size="34.0" />
+               </font></Label>
+            <ImageView fitHeight="61.0" fitWidth="90.0" layoutX="727.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-lecturer-50.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="1118.0" layoutY="117.0" prefHeight="26.0" prefWidth="182.0" text="Total Halls">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalHalls" layoutX="1149.0" layoutY="153.0" prefHeight="84.0" prefWidth="134.0" style="-fx-background-color: white; -fx-alignment: center;" text="  " textAlignment="JUSTIFY" textFill="#eb2e2e">
+               <font>
+                  <Font name="System Bold" size="34.0" />
+               </font></Label>
+            <ImageView fitHeight="61.0" fitWidth="90.0" layoutX="1064.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon/icons8-mommy-and-me-classes-50.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="93.0" layoutY="22.0" prefHeight="16.0" prefWidth="90.0" text="Time:">
+               <font>
+                  <Font name="Arial Black" size="26.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTime" layoutX="183.0" layoutY="24.0" prefHeight="35.0" prefWidth="194.0" textFill="#a81e1e">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

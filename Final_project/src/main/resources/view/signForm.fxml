@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root2" prefHeight="900.0" prefWidth="1348.0" stylesheets="@../style/background.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.signFormController">
+   <children>
+      <ImageView fitHeight="900.0" fitWidth="800.0" layoutX="630.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/victoria-nazaruk-0nyR0Aw5fCA-unsplash.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="134.0" layoutY="67.0" prefHeight="39.0" prefWidth="301.0" text="SIGNUP" textFill="#800f0f">
+         <font>
+            <Font name="System Bold" size="49.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtuserName" layoutX="145.0" layoutY="205.0" prefHeight="60.0" prefWidth="354.0" promptText="User Name" style="-fx-background-color: White; -fx-background-radius: 10;" />
+      <TextField fx:id="txtEmail" layoutX="147.0" layoutY="415.0" prefHeight="60.0" prefWidth="354.0" promptText="Email" style="-fx-background-color: White; -fx-background-radius: 10;" />
+      <JFXButton buttonType="RAISED" layoutX="345.0" layoutY="672.0" onAction="#btnBackOnAction" prefHeight="38.0" prefWidth="124.0" style="-fx-background-color: gold; -fx-background-radius: 10;" text="SignIn">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font></JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="134.0" layoutY="670.0" onAction="#btnAddOnAction" prefHeight="38.0" prefWidth="124.0" style="-fx-background-color: gold; -fx-background-radius: 10;" text="Register">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </JFXButton>
+      <PasswordField fx:id="pwPassword" layoutX="148.0" layoutY="308.0" prefHeight="60.0" prefWidth="354.0" promptText="Password" style="-fx-background-radius: 10;" />
+      <ComboBox fx:id="cmbType" layoutX="144.0" layoutY="522.0" prefHeight="60.0" prefWidth="354.0" promptText="Type" style="-fx-background-radius: 10;" />
+      <ImageView fitHeight="60.0" fitWidth="84.0" layoutX="66.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-login-64%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="60.0" fitWidth="84.0" layoutX="65.0" layoutY="308.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-password-50.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="60.0" fitWidth="84.0" layoutX="62.0" layoutY="418.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-email-30.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="60.0" fitWidth="84.0" layoutX="61.0" layoutY="519.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-type-30.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

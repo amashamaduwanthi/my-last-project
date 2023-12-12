@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1411.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.controller.paymentFormController">
+   <children>
+      <Label layoutX="38.0" layoutY="94.0" prefHeight="779.0" prefWidth="1336.0" style="-fx-background-color: #f1f2f6#ff3333;" />
+      <Label layoutX="49.0" layoutY="174.0" prefHeight="201.0" prefWidth="1301.0" style="-fx-background-color: lightgrey; -fx-background-radius: 20;" />
+      <Label layoutX="118.0" layoutY="40.0" prefHeight="29.0" prefWidth="175.0" text="Payments">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="439.0" layoutY="124.0" onAction="#btnAddPayementOnAction" prefHeight="38.0" prefWidth="94.0" style="-fx-background-color: #12CBC4;" text="Add" />
+      <JFXButton buttonType="RAISED" layoutX="607.0" layoutY="124.0" onAction="#btnUpdatePaymentOnAction" prefHeight="38.0" prefWidth="84.0" style="-fx-background-color: #ff794d;" text="Update" />
+      <TextField fx:id="txtAmount" layoutX="291.0" layoutY="211.0" prefHeight="38.0" prefWidth="199.0" promptText="Amount" />
+      <TextField fx:id="txtDate" layoutX="568.0" layoutY="211.0" prefHeight="38.0" prefWidth="199.0" promptText="Date" />
+      <TextField fx:id="txtStatus" layoutX="889.0" layoutY="211.0" prefHeight="38.0" prefWidth="199.0" promptText="Status" />
+      <ImageView fitHeight="57.0" fitWidth="79.0" layoutX="35.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-payments-48.png" />
+         </image>
+      </ImageView>
+      <JFXComboBox fx:id="cmbClassID" layoutX="1176.0" layoutY="211.0" prefHeight="29.0" prefWidth="156.0" promptText="ClassId" />
+      <JFXComboBox fx:id="cmbStuId" layoutX="72.0" layoutY="327.0" onAction="#cmbStudentOnAction" prefHeight="29.0" prefWidth="156.0" promptText="StuId" />
+      <Label layoutX="268.0" layoutY="330.0" prefHeight="38.0" prefWidth="146.0" text="Sudent Name">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblStudentName" layoutX="401.0" layoutY="335.0" prefHeight="29.0" prefWidth="175.0" style="-fx-background-color: white;">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblPayment" layoutX="66.0" layoutY="399.0" prefHeight="375.0" prefWidth="1151.0">
+        <columns>
+          <TableColumn fx:id="colPId" prefWidth="123.0" text="Payement Id " />
+          <TableColumn fx:id="colAmount" prefWidth="169.0" text="Amount" />
+            <TableColumn fx:id="colDate" prefWidth="206.0" text="Date" />
+            <TableColumn fx:id="colStatus" prefWidth="275.0" text="Status" />
+            <TableColumn fx:id="colClassId" prefWidth="188.0" text="ClassId" />
+            <TableColumn fx:id="colStuId" prefWidth="188.0" text="StuId" />
+        </columns>
+      </TableView>
+      <JFXButton buttonType="RAISED" layoutX="824.0" layoutY="790.0" onAction="#BtnReportOnAction" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: pink; -fx-background-radius: 20;" text="Generate Report" />
+      <Label fx:id="lblPaymentId" layoutX="64.0" layoutY="211.0" prefHeight="38.0" prefWidth="191.0" style="-fx-background-color: white;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtPaymentId" layoutX="718.0" layoutY="43.0" prefHeight="38.0" prefWidth="222.0" promptText="Search here" />
+      <JFXButton layoutX="964.0" layoutY="48.0" onAction="#btnSearchOnAction" prefHeight="29.0" prefWidth="114.0" style="-fx-background-color: lightGreen;" text="Search" />
+   </children>
+</AnchorPane>
