@@ -5,9 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.dao.Custom.StudentDAO;
 import lk.ijse.dto.TM.StudentTm;
 import lk.ijse.dto.studentDto;
-import lk.ijse.model.studentModel;
+import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ViewStudentController {
     public TableColumn <?,?> colTel;
     public TableColumn <?,?> colGender;
     public TableColumn <?,?> colDob;
-
+    StudentDAO studentDAO = new StudentDAOImpl();
 
     public void initialize() throws SQLException {
         loadAllStudent();
@@ -29,10 +30,10 @@ public class ViewStudentController {
     }
     public void loadAllStudent() throws SQLException {
        ObservableList<StudentTm> studentList = FXCollections.observableArrayList();
-       studentModel studentModel = new studentModel();
+
 
        try{
-           List<studentDto> dtoList =studentModel.loadAllStudent();
+           List<studentDto> dtoList =studentDAO.getAll();
            for(studentDto dto :dtoList){
                studentList.add(
                        new StudentTm(
@@ -48,7 +49,7 @@ public class ViewStudentController {
            }
            tblViewStudent.setItems(studentList);
 
-       }catch (SQLException e){
+       }catch (SQLException | ClassNotFoundException e){
            throw  new RuntimeException(e);
        }
    }

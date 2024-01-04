@@ -8,9 +8,12 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.model.HallModel;
-import lk.ijse.model.Lecturermodel;
-import lk.ijse.model.StudentModel;
+import lk.ijse.dao.Custom.HallDAO;
+import lk.ijse.dao.Custom.Impl.HallDAOImpl;
+import lk.ijse.dao.Custom.Impl.LecturerDAOImpl;
+import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
+import lk.ijse.dao.Custom.StudentDAO;
+import lk.ijse.dao.StudentModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +27,9 @@ public class backstaffdashbordFormController {
     public Label lblTotalLecturer;
     public Label lblTotalHalls;
     public Label lblTime;
+    HallDAO hallDAOImpl=new HallDAOImpl();
+    private LecturerDAOImpl lecturerDAOImpl=new LecturerDAOImpl();
+    StudentDAO studentDAOImpl= new StudentDAOImpl();
     public void initialize(){
         setPiechartThigma();
         loadBarChart();
@@ -38,7 +44,7 @@ public class backstaffdashbordFormController {
     private void loadTotalHalls() {
         String HallValue="0";
         try{
-            HallValue= HallModel.searchTotalHall();
+            HallValue= hallDAOImpl.searchTotalHall();
         }catch (Exception e){
             HallValue="0";
         }
@@ -50,7 +56,7 @@ public class backstaffdashbordFormController {
     private void loadTotalLecturer() {
         String lecturerValue="0";
         try{
-            lecturerValue= Lecturermodel.searchTotalLecturer();
+            lecturerValue= lecturerDAOImpl.searchTotalLecturer();
         }catch (Exception e){
             lecturerValue="0";
         }
@@ -65,7 +71,7 @@ public class backstaffdashbordFormController {
         String studentValue="0";
         try{
 
-            studentValue= StudentModel.searchTotalStudent();
+            studentValue= studentDAOImpl.searchTotalStudent();
         }catch (Exception e){
             studentValue="0";
         }

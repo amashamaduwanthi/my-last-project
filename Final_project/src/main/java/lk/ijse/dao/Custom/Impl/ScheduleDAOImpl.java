@@ -1,5 +1,7 @@
-package lk.ijse.model;
+package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.dao.Custom.ScheduleDAO;
+import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.classDto;
 
@@ -10,19 +12,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScheduleModel {
-    public static String generateId() throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+public class ScheduleDAOImpl implements ScheduleDAO {
+    @Override
+    public  String generateNextId() throws SQLException {
+       /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT scheduleId FROM Schedule  ORDER BY scheduleId DESC LIMIT 1";
         PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
+        ResultSet resultSet = pstm.executeQuery();*/
+        ResultSet resultSet= SQLUtil.execute("SELECT scheduleId FROM Schedule  ORDER BY scheduleId DESC LIMIT 1");
         if(resultSet.next()){
-            return chngeId(resultSet.getString(1));
+            return ChangeId(resultSet.getString(1));
         }
-       return chngeId(null);
+       return ChangeId(null);
     }
+    @Override
 
-    private static String chngeId(String ScheduleId) {
+   public  String ChangeId(String ScheduleId) {
         if(ScheduleId!=null){
             String[] split = ScheduleId.split("L0");
             int id= Integer.parseInt(split[1]);
@@ -37,33 +42,36 @@ public class ScheduleModel {
         }
 
     }
-
+    @Override
     public boolean saveSchedule(classDto dto, String hallId) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+      /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="INSERT INTO Schedule VALUES(?,?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1, dto.getId());
         pstm.setString(2, dto.getDescription());
         pstm.setString(3, dto.getDuration());
         pstm.setString(4, hallId);
-        return pstm.executeUpdate()>0;
+        return pstm.executeUpdate()>0;*/
+        return SQLUtil.execute("INSERT INTO Schedule VALUES(?,?,?,?)",dto.getId(),dto.getDescription(),dto.getDuration(),hallId);
     }
 
-    public boolean deleteSchedule(String id) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+    public boolean delete(String id) throws SQLException {
+      /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="DELETE FROM Schedule WHERE scheduleId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1,id);
-        return pstm.executeUpdate()>0;
+        return pstm.executeUpdate()>0;*/
+        return SQLUtil.execute("DELETE FROM Schedule WHERE scheduleId=?",id);
     }
-
-    public classDto searchSchedule(String id) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+    @Override
+    public classDto search(String id) throws SQLException {
+      /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Schedule WHERE ScheduleId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1,id);
-        ResultSet resultSet = pstm.executeQuery();
+        ResultSet resultSet = pstm.executeQuery();*/
         classDto dto=null;
+        ResultSet resultSet=SQLUtil.execute("SELECT * FROM Schedule WHERE ScheduleId=?",id);
         if(resultSet.next()){
             dto=new classDto(
                     resultSet.getString(1),
@@ -73,9 +81,9 @@ public class ScheduleModel {
         }
         return dto;
     }
-
+    @Override
     public boolean updateSchedule(classDto dto, String hallId) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+      /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE Schedule SET description=?,duration=? ,hallId=? WHERE scheduleId=?";
 
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -84,17 +92,20 @@ public class ScheduleModel {
         pstm.setString(3, hallId);
         pstm.setString(4, dto.getId());
 
-        return pstm.executeUpdate() > 0;
+        return pstm.executeUpdate() > 0;*/
+        return  SQLUtil.execute("UPDATE Schedule SET description=?,duration=? ,hallId=? WHERE scheduleId=?",dto.getDescription(),dto.getDuration(),hallId,dto.getId());
 
     }
+    @Override
+    public List<classDto> getAll() throws SQLException {
 
-    public List<classDto> loadAllSchedule() throws SQLException {
-
-            Connection connection = DbConnection.getInstance().getConnection();
+          /*  Connection connection = DbConnection.getInstance().getConnection();
             String sql="SELECT * FROM Schedule";
             PreparedStatement pstm = connection.prepareStatement(sql);
-            ResultSet resultSet = pstm.executeQuery();
+            ResultSet resultSet = pstm.executeQuery();*/
+
             List<classDto> list = new ArrayList<>();
+            ResultSet resultSet=SQLUtil.execute("SELECT * FROM Schedule");
             while (resultSet.next()){
                 list.add(new classDto(
                         resultSet.getString(1),
@@ -104,6 +115,16 @@ public class ScheduleModel {
             }
             return list;
 
+    }
+
+    @Override
+    public boolean save(classDto dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean update(classDto dto) throws SQLException, ClassNotFoundException {
+        return false;
     }
 }
 

@@ -8,10 +8,15 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.model.AdminModel;
-import lk.ijse.model.HallModel;
-import lk.ijse.model.Lecturermodel;
-import lk.ijse.model.StudentModel;
+import lk.ijse.dao.Custom.AdminDAO;
+import lk.ijse.dao.Custom.HallDAO;
+import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
+import lk.ijse.dao.Custom.Impl.HallDAOImpl;
+import lk.ijse.dao.Custom.Impl.LecturerDAOImpl;
+import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
+import lk.ijse.dao.Custom.LecturerDAO;
+import lk.ijse.dao.Custom.StudentDAO;
+import lk.ijse.dao.StudentModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +31,10 @@ public class backdashboardFormController {
     public Label lblTotalLecturer;
     public Label lblTotalHalls;
     public Label lblTime;
+    HallDAO hallDAOImpl=new HallDAOImpl();
+    private LecturerDAO lecturerDAOImpl=new LecturerDAOImpl();
+    StudentDAO studentDAOImpl= new StudentDAOImpl();
+   AdminDAO adminDAOImpl= new AdminDAOImpl();
     public void initialize(){
         setPiechartThigma();
         loadBarChart();
@@ -40,7 +49,7 @@ public class backdashboardFormController {
     private void loadTotalHalls() {
         String HallValue="0";
         try{
-            HallValue= HallModel.searchTotalHall();
+            HallValue= hallDAOImpl.searchTotalHall();
         }catch (Exception e){
             HallValue="0";
         }
@@ -52,7 +61,7 @@ public class backdashboardFormController {
     private void loadTotalLecturer() {
         String lecturerValue="0";
         try{
-            lecturerValue= Lecturermodel.searchTotalLecturer();
+            lecturerValue= lecturerDAOImpl.searchTotalLecturer();
         }catch (Exception e){
             lecturerValue="0";
         }
@@ -67,7 +76,7 @@ public class backdashboardFormController {
         String studentValue="0";
         try{
 
-            studentValue= StudentModel.searchTotalStudent();
+            studentValue= studentDAOImpl.searchTotalStudent();
         }catch (Exception e){
             studentValue="0";
         }
@@ -79,7 +88,7 @@ public class backdashboardFormController {
     private void loadTotalStaff() {
         String staffValue="0";
         try{
-            staffValue= AdminModel.searchTotalStaff();
+            staffValue= adminDAOImpl.searchTotalStaff();
         }catch (Exception e){
             staffValue="0";
         }

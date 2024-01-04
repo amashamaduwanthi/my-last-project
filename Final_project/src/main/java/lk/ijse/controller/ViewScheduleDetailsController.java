@@ -8,13 +8,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.dao.Custom.ClassDAO;
+import lk.ijse.dao.Custom.HallDAO;
+import lk.ijse.dao.Custom.ScheduleDAO;
 import lk.ijse.dto.HallDto;
 import lk.ijse.dto.TM.ScheduleTm;
 import lk.ijse.dto.class2Dto;
 import lk.ijse.dto.classDto;
-import lk.ijse.model.ClassModel;
-import lk.ijse.model.HallModel;
-import lk.ijse.model.ScheduleModel;
+import lk.ijse.dao.Custom.Impl.ClassDAOImpl;
+import lk.ijse.dao.Custom.Impl.HallDAOImpl;
+import lk.ijse.dao.Custom.Impl.ScheduleDAOImpl;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -37,9 +40,9 @@ public class ViewScheduleDetailsController {
     public TableColumn<?, ?> colGrade;
     public TableColumn<?, ?> colDescription;
     public TableColumn<?, ?> colDuration;
-    private ScheduleModel scheduleModel = new ScheduleModel();
-    private ClassModel classModel = new ClassModel();
-    private HallModel hallModel = new HallModel();
+    private ScheduleDAO scheduleDAO = new ScheduleDAOImpl();
+    private ClassDAO classDAO = new ClassDAOImpl();
+    private HallDAO hallDAO = new HallDAOImpl();
 
     public void initialize() {
         loadAllSchedule();
@@ -59,44 +62,44 @@ public class ViewScheduleDetailsController {
 
 
     private void loadAllSchedule() {
-        var model = new ScheduleModel();
+
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<classDto> classDtos = model.loadAllSchedule();
+            List<classDto> classDtos = scheduleDAO.getAll();
             for (classDto dto : classDtos) {
                 obList.add(dto.getId());
             }
             cmbScheduleId.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void loadAllClass() {
-        var model = new ClassModel();
+
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<class2Dto> class2Dtos = model.loadAllclassIds();
+            List<class2Dto> class2Dtos =classDAO.getAll();
             for (class2Dto dto : class2Dtos) {
                 obList.add(dto.getId());
             }
             cmbClassId.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
 
     private void loadAllHall() {
-        var model = new HallModel();
+
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<HallDto> hallDtos = model.loadAllHallIds();
+            List<HallDto> hallDtos = hallDAO.getAll();
             for (HallDto dto : hallDtos) {
                 obList.add(dto.getId());
             }
             cmbHallId.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -105,11 +108,11 @@ public class ViewScheduleDetailsController {
     public void cmbOnHallAction(ActionEvent actionEvent) {
         String id = cmbHallId.getValue().toString();
         try {
-            HallDto dto = hallModel.searchHall(id);
+            HallDto dto = hallDAO.search(id);
             lblHallName.setText(dto.getName());
             lblAvailability.setText(dto.getAvailability());
             lblCapacity.setText(dto.getCapacity());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -117,9 +120,9 @@ public class ViewScheduleDetailsController {
     public void cmbClassOnAction(ActionEvent actionEvent) {
         String id = cmbClassId.getValue().toString();
         try {
-            class2Dto dto = classModel.searchSubject(id);
+            class2Dto dto = classDAO.search(id);
             lblGrade.setText(dto.getGrade());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -127,10 +130,10 @@ public class ViewScheduleDetailsController {
     public void cmbSchduleOnAction(ActionEvent actionEvent) {
         String id = cmbScheduleId.getValue().toString();
         try {
-            classDto dto = scheduleModel.searchSchedule(id);
+            classDto dto = scheduleDAO.search(id);
             lblDescription.setText(dto.getDescription());
             lblDuration.setText(dto.getDuration());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

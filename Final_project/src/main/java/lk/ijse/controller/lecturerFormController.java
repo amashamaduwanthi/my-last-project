@@ -8,9 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.bao.custom.LecturerBO;
+import lk.ijse.bao.custom.impl.LecturerBOImpl;
 import lk.ijse.dto.TM.LecturerTm;
 import lk.ijse.dto.lecturerDto;
-import lk.ijse.model.Lecturermodel;
+import lk.ijse.dao.Custom.Impl.LecturerDAOImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,10 +20,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class lecturerFormController {
-
-
     public AnchorPane panel2;
-
     public TextField txtid;
     public TextField txtName;
     public TextField txtTel;
@@ -35,10 +34,7 @@ public class lecturerFormController {
     public TableColumn<?,?> colAddress;
     public Label lblLecId;
     public TextField txtLectId;
-    private Lecturermodel lecturermodel=new Lecturermodel();
-
-
-
+    private LecturerBO lecturerBO=new LecturerBOImpl();
 
     public void btnAddOnAction(ActionEvent actionEvent) {
         String id=lblLecId.getText();
@@ -51,17 +47,14 @@ public class lecturerFormController {
         if(isVlidated) {
             var dto = new lecturerDto(id, name, address, tel, nic, uni);
             try {
-                boolean isSaved = lecturermodel.saveLecturer(dto);
+                boolean isSaved = lecturerBO.saveLecturer(dto);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Lecturer saved").show();
                     clearField();
                     generateId();
                     loadLecturer();
-
-
-
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
         }else{
@@ -69,7 +62,6 @@ public class lecturerFormController {
 
             }
     }
-
     private boolean validateLecturer() {
         boolean ismatch;
         String lecName= txtName.getText();
@@ -119,7 +111,7 @@ public class lecturerFormController {
 
         var dto=new lecturerDto(id,name,address,tel,nic,uni);
         try {
-            boolean isUpdated=lecturermodel.updateLecturer(dto);
+            boolean isUpdated=lecturerBO.updateLecturer(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.CONFIRMATION,"Lecturer updated").show();
                 clearField();
@@ -129,7 +121,7 @@ public class lecturerFormController {
                 new Alert(Alert.AlertType.CONFIRMATION,"Lecturer not updated").show();
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -138,13 +130,13 @@ public class lecturerFormController {
     public  void  btnSearchlecturerOnAction(ActionEvent actionEvent){
         String id=txtLectId.getText();
         try {
-            lecturerDto dto=lecturermodel.searchLecturer(id);
+            lecturerDto dto=lecturerBO.searchLecturer(id);
             if(dto!=null){
                 setField(dto);
             }else {
                 new Alert(Alert.AlertType.CONFIRMATION,"Lecturer not found").show();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -160,7 +152,7 @@ public class lecturerFormController {
     public void btnDeleteOnAction(ActionEvent actionEvent) {
         String id=txtLectId.getText();
         try {
-           boolean isDeleted= lecturermodel.delteLecturer(id);
+           boolean isDeleted= lecturerBO.delteLecturer(id);
            if(isDeleted){
                clearField();
                loadLecturer();
@@ -168,7 +160,7 @@ public class lecturerFormController {
 
                new Alert(Alert.AlertType.CONFIRMATION,"Lecturer deleted successfully").show();
            }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new  Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -187,10 +179,10 @@ public class lecturerFormController {
 
     private void generateId() {
         try{
-            String lecId=Lecturermodel.generateNxtLecturerId();
+            String lecId= lecturerBO.generateNxtLecturerId();
             lblLecId.setText(lecId);
 
-        }catch (SQLException e){
+        }catch (SQLException | ClassNotFoundException e){
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
@@ -206,7 +198,7 @@ public class lecturerFormController {
         ObservableList<LecturerTm> obList = FXCollections.observableArrayList();
 
         try{
-            List<lecturerDto> lecturers = lecturermodel.loadAllLecturer();
+            List<lecturerDto> lecturers = lecturerBO.loadAllLecturer();
             for (lecturerDto dto : lecturers) {
                 obList.add(new LecturerTm(
                         dto.getId(),
@@ -217,12 +209,10 @@ public class lecturerFormController {
                 ));
             }
             tblLec.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
     }
-
-
 }
 

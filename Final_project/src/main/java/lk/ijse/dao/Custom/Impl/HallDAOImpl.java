@@ -1,5 +1,7 @@
-package lk.ijse.model;
+package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.dao.Custom.HallDAO;
+import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.HallDto;
 
@@ -10,14 +12,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HallModel {
-    public static String searchTotalHall() throws SQLException {
+public class HallDAOImpl implements HallDAO {
+    public String searchTotalHall() throws SQLException {
         String count="0";
-        Connection connection = DbConnection.getInstance().getConnection();
+      /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT COUNT(*) FROM Hall;";
         try {
             PreparedStatement pstm = connection.prepareStatement(sql);
-            ResultSet resultSet = pstm.executeQuery();
+            ResultSet resultSet = pstm.executeQuery();*/
+        try {
+        ResultSet resultSet= SQLUtil.execute("SELECT COUNT(*) FROM Hall;");
             if(resultSet.next()){
                 count=resultSet.getString(1);
             }
@@ -26,13 +30,11 @@ public class HallModel {
         }
         return count;
     }
+@Override
+    public List<HallDto> getAll() throws SQLException {
 
-    public List<HallDto> loadAllHallIds() throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql="SELECT * FROM Hall";
-        PreparedStatement pstm = connection.prepareStatement(sql);
         List<HallDto> dto = new ArrayList<>();
-        ResultSet resultSet = pstm.executeQuery();
+        ResultSet resultSet=SQLUtil.execute("SELECT * FROM Hall");
         while (resultSet.next()){
             dto.add(new HallDto(
                     resultSet.getString(1),
@@ -44,30 +46,45 @@ public class HallModel {
         return dto;
     }
 
-   /* public boolean sabeHalls(HallDto dto2) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql="INSERT INTO Hall VALUES(?,?,?,?)";
-        try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setString(1, dto2.getId());
-            pstm.setString(2, dto2.getName());
-            pstm.setString(3, dto2.getAvailability());
-            pstm.setString(4, dto2.getCapacity());
-            return pstm.executeUpdate()>0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
+    @Override
+    public boolean save(HallDto dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
 
-    public HallDto searchHall(String id) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+    @Override
+    public boolean update(HallDto dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public String generateNextId() throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public String ChangeId(String subId) {
+        return null;
+    }
+
+
+    @Override
+    public HallDto search(String id) throws SQLException {
+       /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Hall WHERE hallId=?";
         try {
             PreparedStatement pstm = connection.prepareStatement(sql);
             pstm.setString(1,id);
             HallDto dto=null;
-            ResultSet resultSet = pstm.executeQuery();
-            if (resultSet.next()){
+            ResultSet resultSet = pstm.executeQuery();*/
+        try {
+        HallDto dto=null;
+        ResultSet resultSet=SQLUtil.execute("SELECT * FROM Hall WHERE hallId=?",id);
+        if (resultSet.next()){
                 dto= new HallDto(
                         resultSet.getString(1),
                         resultSet.getString(2),

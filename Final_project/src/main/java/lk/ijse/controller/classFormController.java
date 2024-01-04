@@ -10,13 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.bao.custom.ClassBO;
+import lk.ijse.bao.custom.impl.ClassBOImpl;
 import lk.ijse.dto.HallDto;
 import lk.ijse.dto.TM.ClassTm;
 import lk.ijse.dto.class2Dto;
-import lk.ijse.dto.subjectDto;
-import lk.ijse.model.ClassModel;
-import lk.ijse.model.HallModel;
-import lk.ijse.model.SubjectModel;
+import lk.ijse.dao.Custom.Impl.ClassDAOImpl;
+import lk.ijse.dao.Custom.Impl.HallDAOImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -38,8 +38,8 @@ public class classFormController {
     public TableColumn<?,?> colClassId;
     public TableColumn<?,?> colGrade;
     public Label lblClassId;
-    private ClassModel classModel=new ClassModel();
-    private HallModel hallModel=new HallModel();
+    private ClassBO classBO=new ClassBOImpl();
+
     public void initialize(){
         loadAllClasses();
         setCellValueFactory();
@@ -48,7 +48,7 @@ public class classFormController {
 
     private void generateNextId() {
         try{
-            String classId= ClassModel.generateNxtClassId();
+            String classId= classBO.generateNxtClassId();
             lblClassId.setText(classId);
 
         }catch (SQLException e){
@@ -63,11 +63,8 @@ public class classFormController {
 
     private void loadAllClasses() {
         ObservableList<ClassTm> obList = FXCollections.observableArrayList();
-
-
         try {
-            var model=new ClassModel();
-        List<class2Dto>    class2Dtos = model.loadAllclassIds();
+            List<class2Dto> class2Dtos =classBO.loadAllclassIds();
             for(class2Dto dto:class2Dtos) {
                 obList.add(new ClassTm(dto.getId(), dto.getGrade()));
             }
@@ -88,7 +85,7 @@ public class classFormController {
             var dto = new class2Dto(classId, grade);
 
             try {
-                boolean isSaved = classModel.saveClass(dto);
+                boolean isSaved = classBO.saveClass(dto);
 
                 if (isSaved) {
                     clearField();
@@ -123,7 +120,7 @@ public class classFormController {
     public void btnDeleteClassOnAction(ActionEvent actionEvent) {
         String classId = txtSerchClassId.getText();
         try {
-          boolean isDeleted= classModel.deleteClass(classId);
+          boolean isDeleted= classBO.deleteClass(classId);
             if(isDeleted){
                 clearField();
                 loadAllClasses();
@@ -143,7 +140,7 @@ public class classFormController {
 
         var dto=new class2Dto(classId,grade);
         try {
-            boolean isUpdated=classModel.updateClass(dto);
+            boolean isUpdated=classBO.updateClass(dto);
             if(isUpdated){
                 clearField();
                 loadAllClasses();
@@ -157,11 +154,10 @@ public class classFormController {
             throw new RuntimeException(e);
         }
     }
-
     public void btnSearchClassOnAction(ActionEvent actionEvent) {
         String classId = txtSerchClassId.getText();
         try {
-            class2Dto class2Dto=classModel.searchSubject(classId);
+            class2Dto class2Dto=classBO.searchClass(classId);
             if(class2Dto!=null){
                    lblClassId.setText(class2Dto.getId());
                 txtGrade.setText(class2Dto.getGrade());
@@ -186,7 +182,7 @@ public class classFormController {
 
         String id = tctHallId.getText();
         try {
-            HallDto hallDto=hallModel.searchHall(id);
+            HallDto hallDto=classBO.searchHall(id);
             if(hallDto!=null){
                 txtHallName.setText(hallDto.getName());
                 txtAvailabitiy.setText(hallDto.getAvailability());

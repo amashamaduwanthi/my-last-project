@@ -1,5 +1,7 @@
-package lk.ijse.model;
+package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.dao.Custom.ExamDAO;
+import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.ExamDto;
 import lk.ijse.dto.ResultDto;
@@ -11,19 +13,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExamModel {
-    public static String generateNxtExamId() throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+public class ExamDAOImpl implements ExamDAO {
+    @Override
+    public  String generateNextId() throws SQLException {
+       /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT examId FROM Exams  ORDER BY examId DESC LIMIT 1 ";
         PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
+        ResultSet resultSet = pstm.executeQuery();*/
+        ResultSet resultSet= SQLUtil.execute("SELECT examId FROM Exams  ORDER BY examId DESC LIMIT 1 ");
         if (resultSet.next()) {
             return ChangeId(resultSet.getString(1));
         }
         return ChangeId(null);
-    }
 
-    private static String ChangeId(String examId) {
+    }
+    @Override
+
+   public   String ChangeId(String examId) {
         if (examId!= null) {
             String[] split = examId.split("E0");
             int id = Integer.parseInt(split[1]);
@@ -38,10 +44,9 @@ public class ExamModel {
             return "E001";
         }
     }
-
-
-    public boolean SaveExam(ExamDto dto) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+@Override
+   public boolean save(ExamDto dto) throws SQLException {
+       /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO Exams VALUES(?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
@@ -50,38 +55,46 @@ public class ExamModel {
         pstm.setString(3, dto.getDate());
 
 
-        return pstm.executeUpdate() > 0;
+        return pstm.executeUpdate() > 0;*/
+    return SQLUtil.execute("INSERT INTO Exams VALUES(?,?,?)",dto.getId(),dto.getName(),dto.getDate());
     }
-
-    public boolean UpdateExam(ExamDto dto) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+@Override
+    public boolean update(ExamDto dto) throws SQLException {
+       /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE Exams SET name=?,date=? WHERE examId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1, dto.getName());
         pstm.setString(2, dto.getDate());
 
         pstm.setString(3, dto.getId());
-        return pstm.executeUpdate() > 0;
+        return pstm.executeUpdate() > 0;*/
+    return SQLUtil.execute("UPDATE Exams SET name=?,date=? WHERE examId=?",dto.getName(),dto.getDate(),dto.getId());
     }
 
 
-    public boolean deleteExam(String id) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+
+
+    @Override
+    public boolean delete(String id) throws SQLException {
+       /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "DELETE FROM Exams WHERE examId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
         pstm.setString(1, id);
 
-        return pstm.executeUpdate() > 0;
+        return pstm.executeUpdate() > 0;*/
+    return SQLUtil.execute( "DELETE FROM Exams WHERE examId=?",id);
     }
 
-    public ExamDto searchStudent(String id) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+    public ExamDto search(String id) throws SQLException {
+       /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM Exams WHERE examId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1, id);
+
+        ResultSet resultSet = pstm.executeQuery();*/
         ExamDto dto = null;
-        ResultSet resultSet = pstm.executeQuery();
+        ResultSet resultSet=SQLUtil.execute("SELECT * FROM Exams WHERE examId=?",id);
         if (resultSet.next()) {
             dto = new ExamDto(
                     resultSet.getString(1),
@@ -91,9 +104,9 @@ public class ExamModel {
         }
         return dto;
     }
-
+@Override
     public boolean SaveResult(ResultDto dto1) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
+        /*Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO StudentResult VALUES(?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
 
@@ -103,16 +116,18 @@ public class ExamModel {
         pstm.setDouble(3, dto1.getMark());
 
 
-        return pstm.executeUpdate() > 0;
+        return pstm.executeUpdate() > 0;*/
+    return SQLUtil.execute("INSERT INTO StudentResult VALUES(?,?,?)",dto1.getStudentId(),dto1.getExamId(),dto1.getMark());
     }
-
-    public List<ExamDto> getAllExam() throws SQLException {
-        DbConnection dbConnection = DbConnection.getInstance();
+@Override
+    public List<ExamDto> getAll() throws SQLException {
+      /*  DbConnection dbConnection = DbConnection.getInstance();
         Connection connection = dbConnection.getConnection();
         String sql = "SELECT * FROM Exams";
 
             PreparedStatement pstm = connection.prepareStatement(sql);
-            ResultSet resultSet = pstm.executeQuery();
+            ResultSet resultSet = pstm.executeQuery();*/
+    ResultSet resultSet=SQLUtil.execute("SELECT * FROM Exams");
             List<ExamDto> examList = new ArrayList<>();
             while (resultSet.next()) {
 
@@ -125,14 +140,15 @@ public class ExamModel {
             return examList;
 
     }
-
+@Override
     public List<ResultDto> loadAllResult() throws SQLException {
-        DbConnection dbConnection = DbConnection.getInstance();
+       /* DbConnection dbConnection = DbConnection.getInstance();
         Connection connection = dbConnection.getConnection();
         String sql = "SELECT * FROM StudentResult";
 
         PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
+        ResultSet resultSet = pstm.executeQuery();*/
+        ResultSet resultSet=SQLUtil.execute("SELECT * FROM StudentResult");
         List<ResultDto> resultList = new ArrayList<>();
         while (resultSet.next()) {
 

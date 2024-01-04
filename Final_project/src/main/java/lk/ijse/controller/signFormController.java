@@ -12,21 +12,18 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.dao.Custom.AdminDAO;
 import lk.ijse.dto.AdminDto;
-import lk.ijse.model.AdminModel;
+import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class signFormController {
     public AnchorPane root2;
     public TextField txtuserName;
     public TextField txtEmail;
-    //private AdminModel adminModel = new AdminModel();
-
-
     public PasswordField pwPassword;
     public ComboBox cmbType;
 
@@ -41,8 +38,7 @@ public class signFormController {
 
         cmbType.setItems(obList);
     }
-
-
+   AdminDAO adminDAOImpl= new AdminDAOImpl();
     public void btnBackOnAction(ActionEvent actionEvent) throws IOException {
         Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/loginForm.fxml"));
         Scene scene = new Scene(rootNode);
@@ -53,8 +49,6 @@ public class signFormController {
     }
 
     public void btnAddOnAction(ActionEvent actionEvent) {
-
-
         String username = txtuserName.getText();
         String password = pwPassword.getText();
         String email = txtEmail.getText();
@@ -64,13 +58,13 @@ public class signFormController {
         var dto = new AdminDto(username, password, email, type);
         if (isValidated) {
             try {
-                var adminModel = new AdminModel();
-                boolean isSaved = adminModel.SaveAdmin(dto);
+
+                boolean isSaved = adminDAOImpl.save(dto);
                 if (isSaved) {
                    // new Alert(Alert.AlertType.CONFIRMATION, "User added successfully!!!").show();
                     clearField();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                // new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
             new Alert(Alert.AlertType.INFORMATION, "User added successfully!!!").show();

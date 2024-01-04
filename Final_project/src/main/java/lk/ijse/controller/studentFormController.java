@@ -15,9 +15,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lk.ijse.QR.GenerateQr;
+import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
+import lk.ijse.dao.Custom.Impl.ParentDAOImpl;
+import lk.ijse.dao.Custom.Impl.RegisterDAOImpl;
+import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
+import lk.ijse.dao.Custom.ParentDAO;
+import lk.ijse.dao.Custom.RegisterDAO;
+import lk.ijse.dao.Custom.StudentDAO;
+import lk.ijse.dao.StudentModel;
 import lk.ijse.dto.*;
 import lk.ijse.email.email;
-import lk.ijse.model.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -47,9 +54,9 @@ public class studentFormController {
     public TextField txtEmails;
     public JFXComboBox cmbUserName;
 
-    studentModel studentModel= new studentModel();
-   ParentModel parentModel= new ParentModel();
-   RegisterMode registerMode=new RegisterMode();
+   StudentDAO studentDAOImpl= new StudentDAOImpl();
+   ParentDAO parentDAOIMPL= new ParentDAOImpl();
+   RegisterDAO registerMode=new RegisterDAOImpl();
 
     //private studentModel studModel=new studentModel();
     public void initialize(){
@@ -63,9 +70,9 @@ public class studentFormController {
 
     private void loadUserName() {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        var model= new AdminModel();
+        var model= new AdminDAOImpl();
         try {
-            List<AdminDto> adminDtos = model.loadAllType();
+            List<AdminDto> adminDtos = model.getAll();
             adminDtos.forEach(adminDto -> obList.add(adminDto.getUsername()));
             cmbUserName.setItems(obList);
         } catch (SQLException e) {
@@ -116,7 +123,8 @@ public class studentFormController {
         var dto2=new RegistrationDto(regId,sName,sEmail,date,sParentId,userName);
 
             try {
-                boolean isSaved = studentModel.setStudent(dto, Dto, dto2);
+                StudentModel studentDAO = new StudentModel();
+                boolean isSaved = studentDAO.setStudent(dto, Dto, dto2);
                 // boolean isAdded=parentModel.SaveStudent(Dto);
 
                 if (isSaved) {
@@ -211,11 +219,11 @@ public class studentFormController {
 
     }
 
-    public void btnSearchOnAction(ActionEvent actionEvent) {
+    public void btnSearchOnAction(ActionEvent actionEvent) throws ClassNotFoundException {
         String id=txtId.getText();
         studentDto studentDto= null;
         try {
-            studentDto = studentModel.searchStudent(id);
+            studentDto = studentDAOImpl.search(id);
             if(studentDto!=null){
                 txtId.setText(studentDto.getId());
                 txtName.setText(studentDto.getName());
@@ -235,7 +243,7 @@ public class studentFormController {
         }
 
     }
-    public void btnUpdateStudentOnAction(ActionEvent actionEvent) {
+    public void btnUpdateStudentOnAction(ActionEvent actionEvent) throws ClassNotFoundException {
       String id=txtId.getText();
       String name=txtName.getText();
       String address=txtAddress.getText();
@@ -247,7 +255,7 @@ public class studentFormController {
 
       var dto=new studentDto(id,name,address,email,contactNo,gender,date);
         try {
-          boolean isUpdated=  studentModel.updateStudent(dto);
+          boolean isUpdated=  studentDAOImpl.update(dto);
           if(isUpdated){
               new Alert(Alert.AlertType.CONFIRMATION,"Student Updated").show();
               clearField();
@@ -259,10 +267,10 @@ public class studentFormController {
         }
 
     }
-    public void btnDeleteStudentOnAction(ActionEvent actionEvent) {
+    public void btnDeleteStudentOnAction(ActionEvent actionEvent) throws ClassNotFoundException {
         String id=txtId.getText();
         try {
-            boolean isDeleted=studentModel.deleteStudent(id);
+            boolean isDeleted= studentDAOImpl.delete(id);
             if(isDeleted){
                 clearField();
                 generateRegId();
@@ -282,26 +290,26 @@ public class studentFormController {
   }
     public void generateRegId(){
       try{
-          String regId=studentModel.generateNextRegId();
+          String regId= studentDAOImpl.generateNextId();
           lblRegId.setText(regId);
 
-      }catch (SQLException e){
+      }catch (SQLException | ClassNotFoundException e){
           new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
       }
     }
 
     public void btnParentSerachOnAction(ActionEvent actionEvent) {
         String parentId = txtParentId.getText();
-        var model=new ParentModel();
+
         try {
-            ParentDto parentDto = model.searchParent(parentId);
+            ParentDto parentDto = parentDAOIMPL.search(parentId);
             if(parentDto!=null){
                 txtParentId.setText(parentDto.getParentId());
                 txtpName.setText(parentDto.getParentName());
                 txtPContactNo.setText(String.valueOf(parentDto.getParentContactNo()));
                 txtstuId.setText(parentDto.getStuId());
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

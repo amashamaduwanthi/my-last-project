@@ -6,9 +6,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.dao.Custom.*;
+import lk.ijse.dao.Custom.Impl.*;
 import lk.ijse.dto.*;
 import lk.ijse.dto.TM.StudentClassTm;
-import lk.ijse.model.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -28,8 +29,14 @@ public class StudentClassRegistrationFormController {
     public TableColumn<?, ?> colSubName;
     public TableColumn<?, ?> colLecName;
     public TextField txtStuId;
+   ClassSubjectDetailsDAO classSubjectDetailsDAOImpl= new ClassSubjectDetailsDAOImpl();
+    private LecturerDAO lecturerDAOImpl=new LecturerDAOImpl();
+    private ClassDAOImpl classDAOImpl=new ClassDAOImpl();
+   StudentClassDAO studentClassDAO= new StudentClassDAOImpl();
+  StudentDAO studentDAO= new StudentDAOImpl();
+  SubjectDAO subjectDAO=new SubjectDAOImpl();
 
-    public void initialize() {
+    public void initialize() throws ClassNotFoundException {
         loadAllStudentId();
         loadAllClassId();
         loadAllSubjectId();
@@ -46,11 +53,11 @@ public class StudentClassRegistrationFormController {
 
     }
 
-    private void loadAllDetails() {
+    private void loadAllDetails() throws ClassNotFoundException {
         ObservableList<StudentClassTm> obList = FXCollections.observableArrayList();
-        var model = new StudentClassModel();
+
         try {
-            List<StudentClassDto> studentClassDtos = model.loadAllDetails();
+            List<StudentClassDto> studentClassDtos = studentClassDAO.getAll();
             for (StudentClassDto dto : studentClassDtos) {
                 obList.add(new StudentClassTm(dto.getId(), dto.getClassId(), dto.getSubName(), dto.getLecName()));
             }
@@ -62,14 +69,14 @@ public class StudentClassRegistrationFormController {
 
     private void loadAllLecturerId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        var model = new Lecturermodel();
+
         try {
-            List<lecturerDto> lecturerDtos = model.loadAllLecturer();
+            List<lecturerDto> lecturerDtos = lecturerDAOImpl.getAll();
             for (lecturerDto dto : lecturerDtos) {
                 obList.add(dto.getId());
             }
             cmbLecturerid.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -77,15 +84,15 @@ public class StudentClassRegistrationFormController {
 
     private void loadAllSubjectId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        var model = new SubjectModel();
+
         try {
-            List<subjectDto> subjectDtos = model.loadAllSubject();
+            List<subjectDto> subjectDtos = subjectDAO.getAll();
             for (subjectDto dto : subjectDtos) {
                 obList.add(dto.getId());
             }
             cmbSubId.setItems(obList);
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
@@ -93,9 +100,9 @@ public class StudentClassRegistrationFormController {
 
     private void loadAllClassId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        var model = new ClassModel();
+
         try {
-            List<class2Dto> class2Dtos = model.loadAllclassIds();
+            List<class2Dto> class2Dtos = classDAOImpl.getAll();
             for (class2Dto dto : class2Dtos) {
                 obList.add(dto.getId());
             }
@@ -107,11 +114,11 @@ public class StudentClassRegistrationFormController {
 
     }
 
-    private void loadAllStudentId() {
+    private void loadAllStudentId() throws ClassNotFoundException {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        var model = new studentModel();
+
         try {
-            List<studentDto> studentDtos = model.loadAllStudent();
+            List<studentDto> studentDtos = studentDAO.getAll();
             for (studentDto dto : studentDtos) {
                 obList.add(dto.getId());
             }
@@ -121,11 +128,11 @@ public class StudentClassRegistrationFormController {
         }
     }
 
-    public void cmbLoadStudentNameOnAction(ActionEvent actionEvent) {
+    public void cmbLoadStudentNameOnAction(ActionEvent actionEvent) throws ClassNotFoundException {
         String id = (String) cmbStuID.getValue();
-        var model = new studentModel();
+
         try {
-            var student = model.searchStudent(id);
+            var student = studentDAO.search(id);
             lblStuName.setText(student.getName());
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -136,9 +143,9 @@ public class StudentClassRegistrationFormController {
 
     public void cmbLoadGradeOnAction(ActionEvent actionEvent) {
         String id = (String) cmbClassId.getValue();
-        var model = new ClassModel();
+
         try {
-            var grade = model.searchSubject(id);
+            var grade = classDAOImpl.search(id);
             lblGrade.setText(grade.getGrade());
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -146,11 +153,11 @@ public class StudentClassRegistrationFormController {
         }
     }
 
-    public void cmbLoadSubjectNameOnAction(ActionEvent actionEvent) {
+    public void cmbLoadSubjectNameOnAction(ActionEvent actionEvent) throws ClassNotFoundException {
         String id = (String) cmbSubId.getValue();
-        var model = new SubjectModel();
+
         try {
-            var student = model.searchSubject(id);
+            var student = subjectDAO.search(id);
             lblSubName.setText(student.getName());
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -160,11 +167,11 @@ public class StudentClassRegistrationFormController {
 
     public void cmbLoadLecNameOnAction(ActionEvent actionEvent) {
         String id = (String) cmbLecturerid.getValue();
-        var model = new Lecturermodel();
+
         try {
-            var student = model.searchLecturer(id);
+            var student = lecturerDAOImpl.search(id);
             lblLectName.setText(student.getName());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -176,16 +183,16 @@ public class StudentClassRegistrationFormController {
         String subName = lblSubName.getText();
         String lectName = lblLectName.getText();
 
-        var model = new classSubModel();
+
         try {
-            boolean isAdded = model.addClass(classId,id, subName, lectName);
+            boolean isAdded = classSubjectDetailsDAOImpl.addClass(classId,id, subName, lectName);
             if (isAdded) {
                 clearField();
                 loadAllDetails();
 
                 new Alert(Alert.AlertType.INFORMATION, "Class Added").show();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -198,11 +205,11 @@ public class StudentClassRegistrationFormController {
         lblStuName.setText("");
     }
 
-    public void btnSearchOnAction(ActionEvent actionEvent) {
+    public void btnSearchOnAction(ActionEvent actionEvent) throws ClassNotFoundException {
         String id=txtStuId.getText();
-        var model=new StudentClassModel();
+
         try {
-            StudentClassDto dto=model.searchStudentClass(id);
+            StudentClassDto dto=studentClassDAO.search(id);
             if(dto!=null){
                // cmbClassId.setValue(dto.getClassId());
                 lblSubName.setText(dto.getSubName());

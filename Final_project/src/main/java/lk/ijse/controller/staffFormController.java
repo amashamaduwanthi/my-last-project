@@ -8,9 +8,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.dao.Custom.AdminDAO;
 import lk.ijse.dto.AdminDto;
 import lk.ijse.dto.TM.StaffTm;
-import lk.ijse.model.AdminModel;
+import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,7 +26,7 @@ public class staffFormController {
     public TableView<StaffTm> tblStaff;
     public TableColumn<? ,?> colStaffName;
     public TableColumn<? ,?> colEmail;
-    private AdminModel adminModel=new AdminModel();
+    AdminDAO adminDAOImpl=new AdminDAOImpl();
     public void initialize(){
         loadAllStaff();
         setCellValueFactory();
@@ -40,12 +41,12 @@ public class staffFormController {
     private void loadAllStaff() {
         ObservableList<StaffTm> obList = FXCollections.observableArrayList();
         try {
-            List<AdminDto> adminDtos = adminModel.loadAllType();
+            List<AdminDto> adminDtos = adminDAOImpl.getAll();
             for (AdminDto dto : adminDtos) {
                 obList.add(new StaffTm(dto.getUsername(),dto.getPassword(),dto.getEmail()));
             }
             tblStaff.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -54,7 +55,7 @@ public class staffFormController {
     public void btnStaffSearchOnAction(ActionEvent actionEvent) {
         String userName = txtSeachStaff.getText();
         try {
-            AdminDto adminDto=adminModel.searchAdmin(userName);
+            AdminDto adminDto=adminDAOImpl.search(userName);
             if (adminDto!=null){
                 txtUserName.setText(adminDto.getUsername());
                 txtPassword.setText(adminDto.getPassword());
@@ -63,25 +64,23 @@ public class staffFormController {
             }else{
                 new Alert(Alert.AlertType.ERROR,"User Not Found").show();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
 
     }
 
-
-
     public void btnDeleteOnAction(ActionEvent actionEvent) {
         String userName=txtUserName.getText();
         try {
-           boolean isDeleted =adminModel.deleteAdmin(userName);
+           boolean isDeleted =adminDAOImpl.delete(userName);
            if(isDeleted){
                clearField();
                loadAllStaff();
                new Alert(Alert.AlertType.CONFIRMATION,"User Deleted").show();
            }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -101,13 +100,13 @@ public class staffFormController {
         String type = txtType.getText();
         var dto=new AdminDto(userName,password,email,type);
         try {
-            boolean isUpdated=adminModel.updateAdmin(dto);
+            boolean isUpdated=adminDAOImpl.update(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.CONFIRMATION,"User Updated").show();
                 clearField();
                 loadAllStaff();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }

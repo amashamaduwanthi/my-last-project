@@ -6,15 +6,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.ExamBO;
+import lk.ijse.bao.custom.impl.ExamBOImpl;
+import lk.ijse.dao.Custom.ExamDAO;
+import lk.ijse.dao.Custom.StudentDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.ExamDto;
 import lk.ijse.dto.ResultDto;
 import lk.ijse.dto.TM.ResultTm;
-import lk.ijse.dto.examDto;
 import lk.ijse.dto.studentDto;
-import lk.ijse.model.ClassModel;
-import lk.ijse.model.ExamModel;
-import lk.ijse.model.studentModel;
+import lk.ijse.dao.Custom.Impl.ExamDAOImpl;
+import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -39,7 +41,8 @@ public class examFormController {
     public Label lblExamName;
     public TableView<ResultTm> tblResult;
     public Label lblExamId;
-    private ExamModel examModel = new ExamModel();
+    private ExamBO examBO = new ExamBOImpl();
+
     public void initialize() {
 
             loadAllStudent();
@@ -51,9 +54,9 @@ public class examFormController {
 
     private void loadResults() {
         ObservableList<ResultTm> obList = FXCollections.observableArrayList();
-        var model=new ExamModel();
+
         try {
-            List<ResultDto> resultDtos= model.loadAllResult();
+            List<ResultDto> resultDtos= examBO.loadAllResult();
             for(ResultDto dto:resultDtos){
                 obList.add(new ResultTm(dto.getExamId(), dto.getStudentId(), dto.getMark()));
             }
@@ -66,10 +69,10 @@ public class examFormController {
 
     private void generateNextId() {
         try{
-            String examId= ExamModel.generateNxtExamId();
+            String examId= examBO.generateNxtExamId();
             lblExamId.setText(examId);
 
-        }catch (SQLException e){
+        }catch (SQLException | ClassNotFoundException e){
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
@@ -82,32 +85,30 @@ public class examFormController {
     }
 
     private void loadAllExam() {
-        var model=new ExamModel();
         try {
-
             ObservableList<String> observableList = FXCollections.observableArrayList();
-            List<ExamDto> examDtos = model.getAllExam();
+            List<ExamDto> examDtos = examBO.getAllExam();
             for (ExamDto dto : examDtos) {
                 observableList.add(dto.getId());
             }
             cmbExamId.setItems(observableList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             throw new RuntimeException(e);
         }
     }
 
     private void loadAllStudent() {
-        var model = new studentModel();
+
         try {
             ObservableList<String> obList = FXCollections.observableArrayList();
-            List<studentDto> studentDtos = model.loadAllStudent();
+            List<studentDto> studentDtos = examBO.loadAllStudent();
             for (studentDto dto : studentDtos) {
                 obList.add(dto.getId());
             }
             cmbStudentId.setItems(obList);
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -119,21 +120,16 @@ public class examFormController {
         String date = txtDate.getText();
         boolean isVlidated = validateExam();
         if (isVlidated) {
-
             var dto = new ExamDto(Id, name, date);
-
-            var examModel = new ExamModel();
-
             try {
-                boolean isSaved = examModel.SaveExam(dto);
-
+                boolean isSaved = examBO.SaveExam(dto);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Exam saved").show();
                     clearField();
                     generateNextId();
                     loadAllExam();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 throw new RuntimeException(e);
             }
@@ -150,19 +146,17 @@ public class examFormController {
         String id = txtId.getText();
         String name = txtName.getText();
         String date = txtDate.getText();
-
-
         var dto = new ExamDto(id, name, date);
-        var examModel = new ExamModel();
+
         try {
-            boolean isUpdated = examModel.UpdateExam(dto);
+            boolean isUpdated = examBO.UpdateExam(dto);
             if (isUpdated) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Exam updated").show();
                 clearField();
                 generateNextId();
                 loadAllExam();
             }
-        }catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -171,16 +165,16 @@ public class examFormController {
 
     public void btnDeleteExamOnAction(ActionEvent actionEvent){
         String id = txtId.getText();
-        var model = new ExamModel();
+
         try {
-            boolean isDeleted = model.deleteExam(id);
+            boolean isDeleted =examBO.deleteExam(id);
             if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Exam deleted successfully.").show();
                 clearField();
                 generateNextId();
                 loadAllExam();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
@@ -193,9 +187,9 @@ public class examFormController {
         if (isVlidated) {
 
             var dto1 = new ResultDto(studentId, examId, mark);
-            var resultModel = new ExamModel();
+
             try {
-                boolean isSaved1 = resultModel.SaveResult(dto1);
+                boolean isSaved1 = examBO.SaveResult(dto1);
                 if (isSaved1) {
                     new Alert(Alert.AlertType.CONFIRMATION, "saved successfully").show();
                     loadResults();
@@ -221,9 +215,9 @@ public class examFormController {
     public void cmbStudentOnAction(ActionEvent actionEvent) {
         String id= (String) cmbStudentId.getValue();
         try {
-            studentDto studentDto=studentModel.searchStudent(id);
+            studentDto studentDto= examBO.searchStudent(id);
             lblStudentName.setText(studentDto.getName());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -232,9 +226,9 @@ public class examFormController {
     public void cmbExamOnAction(ActionEvent actionEvent) {
         String id= (String) cmbExamId.getValue();
         try {
-            ExamDto examDto=examModel.searchStudent(id);
+            ExamDto examDto=examBO.searchExam(id);
             lblExamName.setText(examDto.getName());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -244,18 +238,15 @@ public class examFormController {
             String id=txtId.getText();
 
             try {
-                ExamDto examDto =examModel .searchStudent(id);
+                ExamDto examDto =examBO .searchExam(id);
                 if(examDto!=null){
                     lblExamId.setText(examDto.getId());
                     txtName.setText(examDto.getName());
                     txtDate.setText(examDto.getDate());
-
-
-
                 }else {
                     new Alert(Alert.AlertType.INFORMATION,"Exam not founf").show();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 throw new RuntimeException(e);
             }

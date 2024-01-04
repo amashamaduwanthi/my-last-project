@@ -13,12 +13,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.dto.AdminDto;
-import lk.ijse.email.email;
-import lk.ijse.model.AdminModel;
+import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 public class loginFormController {
     public AnchorPane root1;
@@ -28,7 +26,7 @@ public class loginFormController {
 
     public PasswordField pwPassword;
     public ComboBox cmbType;
-    private AdminModel adminModel=new AdminModel();
+    private AdminDAOImpl adminDaoImpl=new AdminDAOImpl();
     public void initialize(){
         loadAllTyes();
     }
@@ -57,11 +55,8 @@ public class loginFormController {
         String password = pwPassword.getText();
         String type = (String) cmbType.getValue();
 
-
-        var model = new AdminModel();
-
         try {
-           AdminDto dto= model.checkLogin(name, password,type);
+           AdminDto dto= adminDaoImpl.checkLogin(name, password,type);
            if(dto!=null) {
                if (name.equals(dto.getUsername()) && password.equals(dto.getPassword()) && type.equals("Admin")) {
                    LoadDashBoard();
@@ -90,9 +85,6 @@ public class loginFormController {
         stage.centerOnScreen();
         stage.show();
     }
-
-
-
 
     public void LoadDashBoard2() throws IOException {
 

@@ -11,12 +11,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.bao.custom.ScheduleBO;
+import lk.ijse.bao.custom.impl.ScheduleBOImpl;
+import lk.ijse.dao.Custom.HallDAO;
 import lk.ijse.dto.HallDto;
-import lk.ijse.dto.TM.ScheduleTm;
 import lk.ijse.dto.TM.ScheduleTm2;
 import lk.ijse.dto.classDto;
-import lk.ijse.model.HallModel;
-import lk.ijse.model.ScheduleModel;
+import lk.ijse.dao.Custom.Impl.HallDAOImpl;
+import lk.ijse.dao.Custom.Impl.ScheduleDAOImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -40,8 +42,8 @@ public class scheduleFormController {
     public TableColumn<?,?>  colDuration;
     public TableColumn<?,?>  colDescription;
     public TableColumn<?,?>  colHallId;
-    ScheduleModel scedulemodel=new ScheduleModel();
-    HallModel hallModel=new HallModel();
+    ScheduleBO scheduleBO=new ScheduleBOImpl();
+
     public void initialize(){
         loadCmbHallId();
         generateNextScheduleId();
@@ -58,9 +60,9 @@ public class scheduleFormController {
 
     private void loadAllScedules() {
         ObservableList<ScheduleTm2> oblist = FXCollections.observableArrayList();
-        var model=new ScheduleModel();
+
         try {
-            List<classDto> classDtos = model.loadAllSchedule();
+            List<classDto> classDtos = scheduleBO.loadAllSchedule();
             for(classDto dto:classDtos){
                 oblist.add(new ScheduleTm2(dto.getId(), dto.getDuration(), dto.getDescription() ));
             }tblSchedule.setItems(oblist);
@@ -71,7 +73,7 @@ public class scheduleFormController {
 
     private void generateNextScheduleId() {
         try {
-          String ScheduleId=  ScheduleModel.generateId();
+          String ScheduleId=  scheduleBO.generateId();
           lblSceduleId.setText(ScheduleId);
 
         } catch (SQLException e) {
@@ -80,15 +82,14 @@ public class scheduleFormController {
     }
 
     private void loadCmbHallId() {
-        var model= new HallModel();
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-          List<HallDto>hallDtos= model.loadAllHallIds();
+          List<HallDto>hallDtos= scheduleBO.loadAllHallIds();
             for (HallDto dto : hallDtos) {
                 obList.add(dto.getId());
             }
             cmbHallId.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -102,7 +103,7 @@ public class scheduleFormController {
         if (isVlidated) {
             var dto = new classDto(scheduleId, description, duration);
             try {
-                boolean isSaved = scedulemodel.saveSchedule(dto, hallId);
+                boolean isSaved = scheduleBO.saveSchedule(dto, hallId);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Scedule saved").show();
                     clearField();
@@ -148,19 +149,19 @@ public class scheduleFormController {
     public void btnCmbHallIdOnAction(ActionEvent actionEvent) {
         String id = cmbHallId.getValue().toString();
         try {
-            HallDto dto = hallModel.searchHall(id);
+            HallDto dto = scheduleBO.searchHall(id);
             lblHallName.setText(dto.getName());
             lblAvailability.setText(String.valueOf(dto.getAvailability()));
             lblCapacity.setText(String.valueOf(dto.getCapacity()));
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
     public void btnDeleteOnAction(ActionEvent actionEvent) {
         String id=txtSeach.getText();
         try {
-           boolean isDeleted= scedulemodel.deleteSchedule(id);
+           boolean isDeleted= scheduleBO.deleteSchedule(id);
            if(isDeleted){
                new Alert(Alert.AlertType.CONFIRMATION,"Schedule deleted successfully.").show();
                clearField();
@@ -180,7 +181,7 @@ public class scheduleFormController {
         String hallId = cmbHallId.getValue().toString();
         var dto = new classDto(id, description, duration);
         try {
-            boolean isUpdated = scedulemodel.updateSchedule(dto, hallId);
+            boolean isUpdated =scheduleBO.updateSchedule(dto, hallId);
             if (isUpdated) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Schedule updated").show();
                 clearField();
@@ -199,7 +200,7 @@ public class scheduleFormController {
     public void btnSearchOnAction(ActionEvent actionEvent) {
         String id=txtSeach.getText();
         try {
-            classDto dto=scedulemodel.searchSchedule(id);
+            classDto dto=scheduleBO.searchSchedule(id);
             if(dto!=null){
                 setField(dto);
             }else {

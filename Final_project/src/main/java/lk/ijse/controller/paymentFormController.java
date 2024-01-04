@@ -6,15 +6,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.PaymentBO;
+import lk.ijse.bao.custom.impl.PaymentBOImpl;
+import lk.ijse.dao.Custom.PaymentDAO;
+import lk.ijse.dao.Custom.StudentDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.PayementDto;
 import lk.ijse.dto.TM.PayementTm;
 import lk.ijse.dto.class2Dto;
 import lk.ijse.dto.studentDto;
-import lk.ijse.model.ClassModel;
-import lk.ijse.model.Lecturermodel;
-import lk.ijse.model.PaymentModel;
-import lk.ijse.model.studentModel;
+import lk.ijse.dao.Custom.Impl.ClassDAOImpl;
+import lk.ijse.dao.Custom.Impl.PaymentDAOImpl;
+import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -43,8 +46,11 @@ public class paymentFormController {
     public Label lblPaymentId;
     public TableColumn<?,?> colStuId;
     public TextField txtPaymentId;
+   PaymentBO paymentBO= new PaymentBOImpl();
 
-    public void initialize(){
+
+
+    public void initialize() throws ClassNotFoundException {
         loadAllClassId();
         loadAllAtudentIds();
         loadAllPayments();
@@ -54,10 +60,10 @@ public class paymentFormController {
 
     private void generatePaymentId() {
         try{
-            String lecId= PaymentModel.generateNxtPaymentId();
+            String lecId= paymentBO.generateNxtPaymentId();
             lblPaymentId.setText(lecId);
 
-        }catch (SQLException e){
+        }catch (SQLException | ClassNotFoundException e){
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
@@ -75,24 +81,24 @@ public class paymentFormController {
 
     private void loadAllPayments() {
         ObservableList<PayementTm> obList = FXCollections.observableArrayList();
-        var model=new PaymentModel();
+
         try {
-         List<PayementDto> payementDtos =   model.getAllPayment();
+         List<PayementDto> payementDtos =   paymentBO.getAllPayment();
             for(PayementDto dto:payementDtos){
                 obList.add(new PayementTm(dto.getId(),dto.getAmount(),dto.getDate(),dto.getStatus(),dto.getClassId(),dto.getStuId()));
             }
             tblPayment.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    private void loadAllAtudentIds() {
+    private void loadAllAtudentIds() throws ClassNotFoundException {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        var model= new studentModel();
+
         try {
-            List<studentDto> studentDtos = model.loadAllStudent();
+            List<studentDto> studentDtos = paymentBO.loadAllStudent();
             for(studentDto dto:studentDtos){
                 obList.add(dto.getId());
             }
@@ -105,9 +111,9 @@ public class paymentFormController {
 
     private void loadAllClassId() {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        var model=new ClassModel();
+
         try {
-            List<class2Dto> class2Dtos = model.loadAllclassIds();
+            List<class2Dto> class2Dtos = paymentBO.loadAllclassIds();
             for(class2Dto dto:class2Dtos){
                 obList.add(dto.getId());
             }cmbClassID.setItems(obList);
@@ -128,9 +134,9 @@ public class paymentFormController {
         if(isVlidated){
 
         var dto = new PayementDto(id, amount, date, status, classId, stuId);
-        var model = new PaymentModel();
+
         try {
-            boolean isSaved = model.savePayment(dto);
+            boolean isSaved = paymentBO.savePayment(dto);
             if (isSaved) {
                 clearField();
                 loadAllPayments();
@@ -138,7 +144,7 @@ public class paymentFormController {
                 new Alert(Alert.AlertType.CONFIRMATION, "payment Successfully").show();
 
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -186,9 +192,9 @@ public class paymentFormController {
         String classId=(String)cmbClassID.getValue();
         String stuId= (String) cmbStuId.getValue();
         var dto=new PayementDto(id,amount,date,status,classId,stuId);
-        var model=new PaymentModel();
+
         try {
-            boolean isUpdate=model.updatePayment(dto);
+            boolean isUpdate=paymentBO.updatePayment(dto);
             if(isUpdate){
 
                 new Alert(Alert.AlertType.CONFIRMATION,"updated successfully").show();
@@ -197,17 +203,17 @@ public class paymentFormController {
                 generatePaymentId();
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
     }
 
-    public void cmbStudentOnAction(ActionEvent actionEvent)  {
+    public void cmbStudentOnAction(ActionEvent actionEvent) throws ClassNotFoundException {
         String id= (String) cmbStuId.getValue();
-        var model=new studentModel();
+
         try {
-            studentDto dto = model.searchStudent(id);
+            studentDto dto = paymentBO.searchStudent(id);
             lblStudentName.setText(dto.getName());
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -230,17 +236,17 @@ public class paymentFormController {
 
     public void btnSearchOnAction(ActionEvent actionEvent) {
         String id = txtPaymentId.getText();
-        var model=new PaymentModel();
+
         try {
-            PayementDto dto=model.getPayment(id);
+            PayementDto dto=paymentBO.getPayment(id);
             lblPaymentId.setText(dto.getId());
             txtAmount.setText(String.valueOf(dto.getAmount()));
             txtDate.setText(dto.getDate());
             txtStatus.setText(dto.getStatus());
             cmbClassID.setValue(dto.getClassId());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
-    }
+}
 
