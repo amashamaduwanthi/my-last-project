@@ -15,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lk.ijse.QR.GenerateQr;
+import lk.ijse.bao.custom.StudentBo;
+import lk.ijse.bao.custom.impl.StudentBOImpl;
 import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
 import lk.ijse.dao.Custom.Impl.ParentDAOImpl;
 import lk.ijse.dao.Custom.Impl.RegisterDAOImpl;
@@ -22,7 +24,6 @@ import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
 import lk.ijse.dao.Custom.ParentDAO;
 import lk.ijse.dao.Custom.RegisterDAO;
 import lk.ijse.dao.Custom.StudentDAO;
-import lk.ijse.dao.StudentModel;
 import lk.ijse.dto.*;
 import lk.ijse.email.email;
 
@@ -54,9 +55,10 @@ public class studentFormController {
     public TextField txtEmails;
     public JFXComboBox cmbUserName;
 
-   StudentDAO studentDAOImpl= new StudentDAOImpl();
-   ParentDAO parentDAOIMPL= new ParentDAOImpl();
-   RegisterDAO registerMode=new RegisterDAOImpl();
+   //StudentDAO studentDAOImpl= new StudentDAOImpl();
+
+
+   StudentBo studentBo=new StudentBOImpl();
 
     //private studentModel studModel=new studentModel();
     public void initialize(){
@@ -123,8 +125,9 @@ public class studentFormController {
         var dto2=new RegistrationDto(regId,sName,sEmail,date,sParentId,userName);
 
             try {
-                StudentModel studentDAO = new StudentModel();
-                boolean isSaved = studentDAO.setStudent(dto, Dto, dto2);
+               // StudentModel studentDAO = new StudentModel();
+                StudentBo studentBO = new StudentBOImpl();
+                boolean isSaved = studentBO.setStudent(dto, Dto, dto2);
                 // boolean isAdded=parentModel.SaveStudent(Dto);
 
                 if (isSaved) {
@@ -223,7 +226,7 @@ public class studentFormController {
         String id=txtId.getText();
         studentDto studentDto= null;
         try {
-            studentDto = studentDAOImpl.search(id);
+            studentDto = studentBo.searchStudent(id);
             if(studentDto!=null){
                 txtId.setText(studentDto.getId());
                 txtName.setText(studentDto.getName());
@@ -255,7 +258,7 @@ public class studentFormController {
 
       var dto=new studentDto(id,name,address,email,contactNo,gender,date);
         try {
-          boolean isUpdated=  studentDAOImpl.update(dto);
+          boolean isUpdated=  studentBo.updateStudent(dto);
           if(isUpdated){
               new Alert(Alert.AlertType.CONFIRMATION,"Student Updated").show();
               clearField();
@@ -270,7 +273,7 @@ public class studentFormController {
     public void btnDeleteStudentOnAction(ActionEvent actionEvent) throws ClassNotFoundException {
         String id=txtId.getText();
         try {
-            boolean isDeleted= studentDAOImpl.delete(id);
+            boolean isDeleted= studentBo.deleteStudent(id);
             if(isDeleted){
                 clearField();
                 generateRegId();
@@ -290,7 +293,7 @@ public class studentFormController {
   }
     public void generateRegId(){
       try{
-          String regId= studentDAOImpl.generateNextId();
+          String regId= studentBo.generateNextRegId();
           lblRegId.setText(regId);
 
       }catch (SQLException | ClassNotFoundException e){
@@ -302,7 +305,7 @@ public class studentFormController {
         String parentId = txtParentId.getText();
 
         try {
-            ParentDto parentDto = parentDAOIMPL.search(parentId);
+            ParentDto parentDto = studentBo.searchParent(parentId);
             if(parentDto!=null){
                 txtParentId.setText(parentDto.getParentId());
                 txtpName.setText(parentDto.getParentName());

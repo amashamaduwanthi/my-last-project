@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.ExamBO;
 import lk.ijse.bao.custom.impl.ExamBOImpl;
 import lk.ijse.dao.Custom.ExamDAO;
@@ -41,7 +42,7 @@ public class examFormController {
     public Label lblExamName;
     public TableView<ResultTm> tblResult;
     public Label lblExamId;
-    private ExamBO examBO = new ExamBOImpl();
+    private ExamBO examBO = (ExamBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.EXAM);
 
     public void initialize() {
 

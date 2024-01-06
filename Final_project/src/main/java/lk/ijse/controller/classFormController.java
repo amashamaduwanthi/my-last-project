@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.ClassBO;
 import lk.ijse.bao.custom.impl.ClassBOImpl;
 import lk.ijse.dto.HallDto;
@@ -38,7 +39,7 @@ public class classFormController {
     public TableColumn<?,?> colClassId;
     public TableColumn<?,?> colGrade;
     public Label lblClassId;
-    private ClassBO classBO=new ClassBOImpl();
+    private ClassBO classBO= (ClassBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.CLASS);
 
     public void initialize(){
         loadAllClasses();

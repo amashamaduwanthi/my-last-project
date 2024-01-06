@@ -19,4 +19,5 @@ public interface ClassBO extends SuperDAO {
     class2Dto searchClass(String classId) throws SQLException ;
     List<class2Dto> loadAllclassIds() throws SQLException;
     HallDto searchHall(String id) throws SQLException;
+    List<HallDto> loadAllHallIds() throws SQLException ;
 }

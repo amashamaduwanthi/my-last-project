@@ -3,13 +3,14 @@ package lk.ijse.bao.custom.impl;
 import lk.ijse.bao.custom.LecturerBO;
 import lk.ijse.dao.Custom.Impl.LecturerDAOImpl;
 import lk.ijse.dao.Custom.LecturerDAO;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dto.lecturerDto;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class LecturerBOImpl implements LecturerBO {
-    private LecturerDAO lecturerDAOImpl=new LecturerDAOImpl();
+    private LecturerDAO lecturerDAOImpl= (LecturerDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.LECTURER);
     @Override
     public String generateNxtLecturerId() throws SQLException, ClassNotFoundException {
         return lecturerDAOImpl.generateNextId();

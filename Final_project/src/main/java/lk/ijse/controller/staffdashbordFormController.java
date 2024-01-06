@@ -14,13 +14,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import lk.ijse.dao.Custom.HallDAO;
-import lk.ijse.dao.Custom.Impl.HallDAOImpl;
-import lk.ijse.dao.Custom.Impl.LecturerDAOImpl;
-import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
-import lk.ijse.dao.Custom.LecturerDAO;
-import lk.ijse.dao.Custom.StudentDAO;
-import lk.ijse.dao.StudentModel;
+import lk.ijse.bao.custom.DashboardBO;
+import lk.ijse.bao.custom.impl.DashboardBOImpl;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -43,9 +38,7 @@ public class staffdashbordFormController {
     public JFXButton btnLogOut;
     public JFXButton btnExam;
     public JFXButton btnPayment;
-    HallDAO hallDAOImpl=new HallDAOImpl();
-    private LecturerDAO lecturerDAOImpl=new LecturerDAOImpl();
-    StudentDAO studentDAOImpl= new StudentDAOImpl();
+    DashboardBO dashboardBO=new DashboardBOImpl();
 
     public void btnBackOnAction(ActionEvent actionEvent) throws IOException {
         Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/backStaffDashBoardForm.fxml"));
@@ -105,7 +98,7 @@ public class staffdashbordFormController {
     private void loadTotalHalls() {
         String HallValue="0";
         try{
-            HallValue= hallDAOImpl.searchTotalHall();
+            HallValue= dashboardBO.searchTotalHall();
         }catch (Exception e){
             HallValue="0";
         }
@@ -117,7 +110,7 @@ public class staffdashbordFormController {
     private void loadTotalLecturer() {
         String lecturerValue="0";
         try{
-            lecturerValue= lecturerDAOImpl.searchTotalLecturer();
+            lecturerValue= dashboardBO.searchTotalLecturer();
         }catch (Exception e){
             lecturerValue="0";
         }
@@ -132,7 +125,7 @@ public class staffdashbordFormController {
         String studentValue="0";
         try{
 
-            studentValue= studentDAOImpl.searchTotalStudent();
+            studentValue= dashboardBO.searchTotalStudent();
         }catch (Exception e){
             studentValue="0";
         }

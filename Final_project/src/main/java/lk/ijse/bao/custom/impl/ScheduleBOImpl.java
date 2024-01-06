@@ -4,6 +4,7 @@ import lk.ijse.bao.custom.ScheduleBO;
 import lk.ijse.dao.Custom.HallDAO;
 import lk.ijse.dao.Custom.Impl.HallDAOImpl;
 import lk.ijse.dao.Custom.Impl.ScheduleDAOImpl;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dto.HallDto;
 import lk.ijse.dto.classDto;
 
@@ -11,8 +12,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ScheduleBOImpl implements ScheduleBO {
-    ScheduleDAOImpl scheduleDAOImpl=new ScheduleDAOImpl();
-    HallDAO hallDAOImpl=new HallDAOImpl();
+    ScheduleDAOImpl scheduleDAOImpl= (ScheduleDAOImpl) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.SCHEDULE);
+    HallDAO hallDAOImpl= (HallDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.HALL);
     @Override
     public String generateId() throws SQLException {
         return scheduleDAOImpl.generateNextId();

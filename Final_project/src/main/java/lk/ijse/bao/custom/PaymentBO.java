@@ -1,5 +1,6 @@
 package lk.ijse.bao.custom;
 
+import lk.ijse.dao.SuperDAO;
 import lk.ijse.dto.PayementDto;
 import lk.ijse.dto.class2Dto;
 import lk.ijse.dto.studentDto;
@@ -7,7 +8,7 @@ import lk.ijse.dto.studentDto;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface PaymentBO {
+public interface PaymentBO extends SuperDAO {
     String generateNxtPaymentId() throws SQLException, ClassNotFoundException;
 
     String ChangeId(String classfeeId);

@@ -1,12 +1,13 @@
 package lk.ijse.bao.custom;
 
+import lk.ijse.dao.SuperDAO;
 import lk.ijse.dto.HallDto;
 import lk.ijse.dto.classDto;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface ScheduleBO {
+public interface ScheduleBO extends SuperDAO {
     String generateId() throws SQLException ;
     String chngeId(String ScheduleId);
 

@@ -1,11 +1,12 @@
 package lk.ijse.bao.custom;
 
+import lk.ijse.dao.SuperDAO;
 import lk.ijse.dto.lecturerDto;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface LecturerBO {
+public interface LecturerBO extends SuperDAO {
     String generateNxtLecturerId() throws SQLException, ClassNotFoundException;
 
     String ChangeId(String lectId);

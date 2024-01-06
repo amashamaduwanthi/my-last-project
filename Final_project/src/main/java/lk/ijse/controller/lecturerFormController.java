@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.LecturerBO;
 import lk.ijse.bao.custom.impl.LecturerBOImpl;
 import lk.ijse.dto.TM.LecturerTm;
@@ -34,7 +35,7 @@ public class lecturerFormController {
     public TableColumn<?,?> colAddress;
     public Label lblLecId;
     public TextField txtLectId;
-    private LecturerBO lecturerBO=new LecturerBOImpl();
+    private LecturerBO lecturerBO= (LecturerBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.LECTURER);
 
     public void btnAddOnAction(ActionEvent actionEvent) {
         String id=lblLecId.getText();

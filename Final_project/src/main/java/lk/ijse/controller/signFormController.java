@@ -12,6 +12,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.bao.custom.StaffBo;
+import lk.ijse.bao.custom.impl.StaffBOImpl;
 import lk.ijse.dao.Custom.AdminDAO;
 import lk.ijse.dto.AdminDto;
 import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
@@ -26,6 +28,7 @@ public class signFormController {
     public TextField txtEmail;
     public PasswordField pwPassword;
     public ComboBox cmbType;
+    StaffBo staffBO= new StaffBOImpl();
 
     public void initialize() {
         loadAllTyes();
@@ -38,7 +41,7 @@ public class signFormController {
 
         cmbType.setItems(obList);
     }
-   AdminDAO adminDAOImpl= new AdminDAOImpl();
+
     public void btnBackOnAction(ActionEvent actionEvent) throws IOException {
         Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/loginForm.fxml"));
         Scene scene = new Scene(rootNode);
@@ -59,7 +62,7 @@ public class signFormController {
         if (isValidated) {
             try {
 
-                boolean isSaved = adminDAOImpl.save(dto);
+                boolean isSaved = staffBO.SaveAdmin(dto);
                 if (isSaved) {
                    // new Alert(Alert.AlertType.CONFIRMATION, "User added successfully!!!").show();
                     clearField();

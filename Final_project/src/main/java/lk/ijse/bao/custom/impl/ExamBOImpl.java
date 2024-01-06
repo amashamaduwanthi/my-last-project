@@ -5,6 +5,7 @@ import lk.ijse.dao.Custom.ExamDAO;
 import lk.ijse.dao.Custom.Impl.ExamDAOImpl;
 import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
 import lk.ijse.dao.Custom.StudentDAO;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dto.ExamDto;
 import lk.ijse.dto.ResultDto;
 import lk.ijse.dto.studentDto;
@@ -13,8 +14,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ExamBOImpl implements ExamBO {
-    private ExamDAO examDAOImpl = new ExamDAOImpl();
-    StudentDAO studentDAOImpl= new StudentDAOImpl();
+    private ExamDAO examDAOImpl = (ExamDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.EXAM);
+    StudentDAO studentDAOImpl= (StudentDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.STUDENT);
     @Override
     public String generateNxtExamId() throws SQLException, ClassNotFoundException {
         return examDAOImpl.generateNextId();

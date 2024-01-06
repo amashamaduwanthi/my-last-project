@@ -8,12 +8,9 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import lk.ijse.dao.Custom.HallDAO;
-import lk.ijse.dao.Custom.Impl.HallDAOImpl;
-import lk.ijse.dao.Custom.Impl.LecturerDAOImpl;
-import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
-import lk.ijse.dao.Custom.StudentDAO;
-import lk.ijse.dao.StudentModel;
+import lk.ijse.bao.custom.BOFactory;
+import lk.ijse.bao.custom.DashboardBO;
+import lk.ijse.bao.custom.impl.DashboardBOImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,9 +24,7 @@ public class backstaffdashbordFormController {
     public Label lblTotalLecturer;
     public Label lblTotalHalls;
     public Label lblTime;
-    HallDAO hallDAOImpl=new HallDAOImpl();
-    private LecturerDAOImpl lecturerDAOImpl=new LecturerDAOImpl();
-    StudentDAO studentDAOImpl= new StudentDAOImpl();
+    DashboardBO dashboardBO= (DashboardBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.DASHBOARD);
     public void initialize(){
         setPiechartThigma();
         loadBarChart();
@@ -44,7 +39,7 @@ public class backstaffdashbordFormController {
     private void loadTotalHalls() {
         String HallValue="0";
         try{
-            HallValue= hallDAOImpl.searchTotalHall();
+            HallValue= dashboardBO.searchTotalHall();
         }catch (Exception e){
             HallValue="0";
         }
@@ -56,7 +51,7 @@ public class backstaffdashbordFormController {
     private void loadTotalLecturer() {
         String lecturerValue="0";
         try{
-            lecturerValue= lecturerDAOImpl.searchTotalLecturer();
+            lecturerValue= dashboardBO.searchTotalLecturer();
         }catch (Exception e){
             lecturerValue="0";
         }
@@ -71,7 +66,7 @@ public class backstaffdashbordFormController {
         String studentValue="0";
         try{
 
-            studentValue= studentDAOImpl.searchTotalStudent();
+            studentValue= dashboardBO.searchTotalStudent();
         }catch (Exception e){
             studentValue="0";
         }

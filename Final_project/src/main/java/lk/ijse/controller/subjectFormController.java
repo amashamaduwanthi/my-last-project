@@ -5,6 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.LecturerBO;
+import lk.ijse.bao.custom.SubjectBO;
+import lk.ijse.bao.custom.impl.LecturerBOImpl;
+import lk.ijse.bao.custom.impl.SubjectBOImpl;
 import lk.ijse.dao.Custom.LecturerDAO;
 import lk.ijse.dao.Custom.LecturerSubjectDAO;
 import lk.ijse.dto.SubjectLecturerDto;
@@ -41,11 +45,10 @@ public class subjectFormController {
     public TableColumn<?,?> colSubName;
     public TextField txtSubId;
     public Label lblsubId;
-    SubjectDAOImpl subjectDAOImpl=new SubjectDAOImpl();
-    private LecturerDAO lecturerDAOImpl=new LecturerDAOImpl();
-  LecturerSubjectDAO lecturerSubjectDAO=  new LecturerSubjectDAOImpl();
 
-    public void initialize(){
+    SubjectBO subjectBO=new SubjectBOImpl();
+
+    public void initialize() throws ClassNotFoundException {
         loadAllLecturerIds();
         loadAllSubIds();
         loadAllsubLect();
@@ -54,9 +57,9 @@ public class subjectFormController {
 
 }
 
-    private void generateNextId() {
+    private void generateNextId() throws ClassNotFoundException {
         try{
-            String subId=subjectDAOImpl.generateNextId();
+            String subId=subjectBO.generateNxtSubjectId();
             lblsubId.setText(subId);
 
         }catch (SQLException e){
@@ -69,7 +72,7 @@ public class subjectFormController {
         ObservableList<SubjectTm> obList = FXCollections.observableArrayList();
         try{
             new LecturerSubjectDAOImpl();
-            List<SubjectLecturerDto> subjectLecturerDtos = lecturerSubjectDAO.getAll();
+            List<SubjectLecturerDto> subjectLecturerDtos = subjectBO.loadAllSubjectLecturer();
             for (SubjectLecturerDto dto : subjectLecturerDtos) {
                 obList.add(new SubjectTm(dto.getLecId(),dto.getLecName(),dto.getSubId(),dto.getSubName()));
             }
@@ -82,13 +85,13 @@ public class subjectFormController {
     private void loadAllSubIds() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<subjectDto> subjectDtos = subjectDAOImpl.getAll();
+            List<subjectDto> subjectDtos = subjectBO.loadAllSubject();
             for (subjectDto dto : subjectDtos) {
                 obList.add(dto.getId());
             }
             cmbSubId.setItems(obList);
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -96,7 +99,7 @@ public class subjectFormController {
     private void loadAllLecturerIds() {
         ObservableList<String> obList = FXCollections.observableArrayList();
         try {
-            List<lecturerDto> lecturerDtos = lecturerDAOImpl.getAll();
+            List<lecturerDto> lecturerDtos = subjectBO.loadAllLecturer();
             for (lecturerDto dto : lecturerDtos) {
                 obList.add(dto.getId());
             }
@@ -122,14 +125,14 @@ public class subjectFormController {
             var dto = new subjectDto(id, name, description);
 
             try {
-                boolean isSaved = subjectDAOImpl.save(dto);
+                boolean isSaved = subjectBO.saveSubject(dto);
 
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Subject saved successfully").show();
                     clearField();
                     generateNextId();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 throw new RuntimeException(e);
             }
@@ -148,14 +151,14 @@ public class subjectFormController {
     public void btndeleteOnAction(ActionEvent actionEvent) {
         String id=txtSubId.getText();
         try {
-           boolean isDeleted= subjectDAOImpl.delete(id);
+           boolean isDeleted= subjectBO.deleteSubject(id);
            if(isDeleted){
 
                new Alert(Alert.AlertType.CONFIRMATION,"Subject deleted successfully.").show();
                clearField();
                generateNextId();
            }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -167,7 +170,7 @@ public class subjectFormController {
         String description=txtdescription.getText();
         var dto=new subjectDto(id,name,description);
         try {
-            boolean isUpdated= subjectDAOImpl.update(dto);
+            boolean isUpdated= subjectBO.UpdateSubject(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.CONFIRMATION,"Subject Updated").show();
                 clearField();
@@ -175,7 +178,7 @@ public class subjectFormController {
             }else{
               new Alert(Alert.AlertType.CONFIRMATION,"Subject not update.").show();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -186,7 +189,7 @@ public class subjectFormController {
     public void cmbLectIdOnAction(ActionEvent actionEvent) {
         String id= (String) cmbLecId.getValue();
         try {
-            lecturerDto dto = lecturerDAOImpl.search(id);
+            lecturerDto dto = subjectBO.searchLecturer(id);
             lblLecturerName.setText(dto.getName());
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -197,9 +200,9 @@ public class subjectFormController {
     public void btnCmbSubIdOnAction(ActionEvent actionEvent) {
         String id= (String) cmbSubId.getValue();
         try {
-            subjectDto dto = subjectDAOImpl.search(id);
+            subjectDto dto = subjectBO.searchSubject(id);
             lblSubjectName.setText(dto.getName());
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -207,7 +210,7 @@ public class subjectFormController {
     public void btnSearchOnAction(ActionEvent actionEvent) {
         String id=txtSubId.getText();
         try {
-            subjectDto subjectDto=subjectDAOImpl.search(id);
+            subjectDto subjectDto=subjectBO.searchSubject(id);
             if(subjectDto!=null){
                 lblsubId.setText(subjectDto.getId());
                 txtName.setText(subjectDto.getName());
@@ -216,7 +219,7 @@ public class subjectFormController {
             }else{
                 new Alert(Alert.AlertType.INFORMATION,"Subject not found").show();
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             throw new RuntimeException(e);
         }
@@ -232,7 +235,7 @@ public class subjectFormController {
 
             var dto2 = new SubjectLecturerDto(lecId, lecName, subId, subName);
             try {
-                boolean isSaved2 = lecturerSubjectDAO.save(dto2);
+                boolean isSaved2 = subjectBO.saveSubjectLecturer(dto2);
                 if (isSaved2) {
                     clearField();
                     loadAllsubLect();

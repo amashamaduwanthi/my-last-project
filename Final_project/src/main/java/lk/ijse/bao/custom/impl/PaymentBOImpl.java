@@ -6,6 +6,7 @@ import lk.ijse.dao.Custom.Impl.PaymentDAOImpl;
 import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
 import lk.ijse.dao.Custom.PaymentDAO;
 import lk.ijse.dao.Custom.StudentDAO;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dto.PayementDto;
 import lk.ijse.dto.class2Dto;
 import lk.ijse.dto.studentDto;
@@ -14,9 +15,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class PaymentBOImpl implements PaymentBO {
-    PaymentDAO paymentDAOImpl= new PaymentDAOImpl();
-    StudentDAO studentDAO= new StudentDAOImpl();
-    ClassDAOImpl classDAOImpl=new ClassDAOImpl();
+    PaymentDAO paymentDAOImpl= (PaymentDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.PAYMENT);
+    StudentDAO studentDAO= (StudentDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.STUDENT);
+    ClassDAOImpl classDAOImpl= (ClassDAOImpl) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.CLASS);
 
     @Override
     public String generateNxtPaymentId() throws SQLException, ClassNotFoundException {

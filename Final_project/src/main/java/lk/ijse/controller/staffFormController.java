@@ -8,6 +8,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.StaffBo;
+import lk.ijse.bao.custom.impl.StaffBOImpl;
 import lk.ijse.dao.Custom.AdminDAO;
 import lk.ijse.dto.AdminDto;
 import lk.ijse.dto.TM.StaffTm;
@@ -26,7 +28,7 @@ public class staffFormController {
     public TableView<StaffTm> tblStaff;
     public TableColumn<? ,?> colStaffName;
     public TableColumn<? ,?> colEmail;
-    AdminDAO adminDAOImpl=new AdminDAOImpl();
+    StaffBo staffBO=new StaffBOImpl();
     public void initialize(){
         loadAllStaff();
         setCellValueFactory();
@@ -41,7 +43,7 @@ public class staffFormController {
     private void loadAllStaff() {
         ObservableList<StaffTm> obList = FXCollections.observableArrayList();
         try {
-            List<AdminDto> adminDtos = adminDAOImpl.getAll();
+            List<AdminDto> adminDtos = staffBO.loadAllType();
             for (AdminDto dto : adminDtos) {
                 obList.add(new StaffTm(dto.getUsername(),dto.getPassword(),dto.getEmail()));
             }
@@ -55,7 +57,7 @@ public class staffFormController {
     public void btnStaffSearchOnAction(ActionEvent actionEvent) {
         String userName = txtSeachStaff.getText();
         try {
-            AdminDto adminDto=adminDAOImpl.search(userName);
+            AdminDto adminDto=staffBO.searchAdmin(userName);
             if (adminDto!=null){
                 txtUserName.setText(adminDto.getUsername());
                 txtPassword.setText(adminDto.getPassword());
@@ -74,7 +76,7 @@ public class staffFormController {
     public void btnDeleteOnAction(ActionEvent actionEvent) {
         String userName=txtUserName.getText();
         try {
-           boolean isDeleted =adminDAOImpl.delete(userName);
+           boolean isDeleted =staffBO.deleteAdmin(userName);
            if(isDeleted){
                clearField();
                loadAllStaff();
@@ -100,7 +102,7 @@ public class staffFormController {
         String type = txtType.getText();
         var dto=new AdminDto(userName,password,email,type);
         try {
-            boolean isUpdated=adminDAOImpl.update(dto);
+            boolean isUpdated=staffBO.updateAdmin(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.CONFIRMATION,"User Updated").show();
                 clearField();

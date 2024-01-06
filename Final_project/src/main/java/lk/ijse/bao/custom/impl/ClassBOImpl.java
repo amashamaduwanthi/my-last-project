@@ -4,6 +4,7 @@ import lk.ijse.bao.custom.ClassBO;
 import lk.ijse.dao.Custom.ClassDAO;
 import lk.ijse.dao.Custom.Impl.ClassDAOImpl;
 import lk.ijse.dao.Custom.Impl.HallDAOImpl;
+import lk.ijse.dao.DAOFactory;
 import lk.ijse.dto.HallDto;
 import lk.ijse.dto.class2Dto;
 
@@ -11,8 +12,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ClassBOImpl implements ClassBO {
-    private ClassDAOImpl classDAOImpl = new ClassDAOImpl();
-    private HallDAOImpl hallDAOImpl=new HallDAOImpl();
+    private ClassDAOImpl classDAOImpl = (ClassDAOImpl) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.CLASS);
+    private HallDAOImpl hallDAOImpl= (HallDAOImpl) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOType.HALL);
 
     @Override
     public String generateNxtClassId() throws SQLException {
@@ -48,5 +49,10 @@ public class ClassBOImpl implements ClassBO {
     @Override
     public HallDto searchHall(String id) throws SQLException {
         return hallDAOImpl.search(id);
+    }
+
+    @Override
+    public List<HallDto> loadAllHallIds() throws SQLException {
+        return hallDAOImpl.getAll();
     }
 }
