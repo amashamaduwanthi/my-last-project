@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom;
 
+import lk.ijse.Entity.Lecturer;
 import lk.ijse.dao.CrudDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.lecturerDto;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface LecturerDAO extends CrudDAO<lecturerDto> {
+public interface LecturerDAO extends CrudDAO<Lecturer> {
    String searchTotalLecturer() throws SQLException ;
     /*String generateNxtLecturerId() throws SQLException ;
 

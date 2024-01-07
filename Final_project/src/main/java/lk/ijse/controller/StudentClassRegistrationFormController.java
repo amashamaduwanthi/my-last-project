@@ -32,11 +32,11 @@ public class StudentClassRegistrationFormController {
     public TableColumn<?, ?> colLecName;
     public TextField txtStuId;
 
-    private LecturerBO lecturerBO=new LecturerBOImpl();
-    private ClassBO classBO=new ClassBOImpl();
-   StudentClassBO studentClassBO= new StudentClassRegistrationBOImpl();
-  StudentBo studentBo= new StudentBOImpl();
-  SubjectBO subjectBo=new SubjectBOImpl();
+    private LecturerBO lecturerBO= (LecturerBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.LECTURER);
+    private ClassBO classBO= (ClassBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.CLASS);
+   StudentClassBO studentClassBO= (StudentClassBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.STUDENTCLASSREGISTRATION);
+  StudentBo studentBo= (StudentBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.STUDENT);
+  SubjectBO subjectBo= (SubjectBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.SUBJECT);
 
     public void initialize() throws ClassNotFoundException {
         loadAllStudentId();

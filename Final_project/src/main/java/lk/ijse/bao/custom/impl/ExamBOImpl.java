@@ -1,16 +1,20 @@
 package lk.ijse.bao.custom.impl;
 
+import lk.ijse.Entity.Admin;
+import lk.ijse.Entity.Exam;
 import lk.ijse.bao.custom.ExamBO;
 import lk.ijse.dao.Custom.ExamDAO;
 import lk.ijse.dao.Custom.Impl.ExamDAOImpl;
 import lk.ijse.dao.Custom.Impl.StudentDAOImpl;
 import lk.ijse.dao.Custom.StudentDAO;
 import lk.ijse.dao.DAOFactory;
+import lk.ijse.dto.AdminDto;
 import lk.ijse.dto.ExamDto;
 import lk.ijse.dto.ResultDto;
 import lk.ijse.dto.studentDto;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExamBOImpl implements ExamBO {
@@ -28,12 +32,12 @@ public class ExamBOImpl implements ExamBO {
 
     @Override
     public boolean SaveExam(ExamDto dto) throws SQLException, ClassNotFoundException {
-        return examDAOImpl.save(dto);
+        return examDAOImpl.save(new Exam(dto.getId(),dto.getName(),dto.getDate()));
     }
 
     @Override
     public boolean UpdateExam(ExamDto dto) throws SQLException, ClassNotFoundException {
-        return examDAOImpl.update(dto);
+        return examDAOImpl.update(new Exam(dto.getId(),dto.getName(),dto.getDate()));
     }
 
     @Override
@@ -43,12 +47,23 @@ public class ExamBOImpl implements ExamBO {
 
     @Override
     public ExamDto searchExam(String id) throws SQLException, ClassNotFoundException {
-        return examDAOImpl.search(id);
+        Exam search= examDAOImpl.search(id);
+        return new ExamDto(search.getId(),search.getName(),search.getDate());
     }
 
     @Override
     public List<ExamDto> getAllExam() throws SQLException, ClassNotFoundException {
-        return examDAOImpl.getAll();
+        List<Exam> all = examDAOImpl.getAll();
+        List<ExamDto> examDtos = new ArrayList<>();
+
+        for (Exam exam : all) {
+           examDtos.add(new ExamDto(
+                    exam.getId(),
+                    exam.getName(),
+                    exam.getDate()));
+
+        }
+        return examDtos;
     }
 
     @Override

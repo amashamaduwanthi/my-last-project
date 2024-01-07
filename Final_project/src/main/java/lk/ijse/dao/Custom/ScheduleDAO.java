@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom;
 
+import lk.ijse.Entity.Schedule;
 import lk.ijse.dao.CrudDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.classDto;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ScheduleDAO extends CrudDAO<classDto> {
+public interface ScheduleDAO extends CrudDAO<Schedule> {
   //  String generateId() throws SQLException ;
   //   String chngeId(String ScheduleId);
 

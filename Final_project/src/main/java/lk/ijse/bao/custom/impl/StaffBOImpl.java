@@ -1,5 +1,6 @@
 package lk.ijse.bao.custom.impl;
 
+import lk.ijse.Entity.Admin;
 import lk.ijse.bao.custom.StaffBo;
 import lk.ijse.dao.Custom.AdminDAO;
 import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
@@ -7,6 +8,7 @@ import lk.ijse.dao.DAOFactory;
 import lk.ijse.dto.AdminDto;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,22 +21,33 @@ public class StaffBOImpl implements StaffBo {
 
     @Override
     public AdminDto searchAdmin(String userName) throws SQLException, ClassNotFoundException {
-        return adminDAOImpl.search(userName);
+       Admin search= adminDAOImpl.search(userName);
+       return new AdminDto(search.getUsername(),search.getPassword(),search.getEmail(),search.getType());
     }
 
     @Override
     public boolean updateAdmin(AdminDto dto) throws SQLException, ClassNotFoundException {
-        return adminDAOImpl.update(dto);
+        return adminDAOImpl.update(new Admin(dto.getUsername(),dto.getPassword(),dto.getEmail(),dto.getType()));
     }
 
     @Override
     public List<AdminDto> loadAllType() throws SQLException, ClassNotFoundException {
-        return adminDAOImpl.getAll();
+        List<Admin> all = adminDAOImpl.getAll();
+        List<AdminDto> adminDtos = new ArrayList<>();
+
+        for (Admin admin : all) {
+            adminDtos.add(new AdminDto(
+                    admin.getUsername(),
+                    admin.getPassword(),
+                    admin.getEmail(),
+                    admin.getType()));
+        }
+        return adminDtos;
     }
 
     @Override
     public boolean SaveAdmin(AdminDto dto) throws SQLException, ClassNotFoundException {
-        return adminDAOImpl.save(dto);
+        return adminDAOImpl.save(new Admin(dto.getUsername(),dto.getPassword(),dto.getEmail(),dto.getType()));
     }
 
     @Override

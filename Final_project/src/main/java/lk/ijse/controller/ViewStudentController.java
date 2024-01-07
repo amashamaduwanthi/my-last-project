@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.StudentBo;
 import lk.ijse.bao.custom.impl.StudentBOImpl;
 import lk.ijse.dao.Custom.StudentDAO;
@@ -24,7 +25,7 @@ public class ViewStudentController {
     public TableColumn <?,?> colTel;
     public TableColumn <?,?> colGender;
     public TableColumn <?,?> colDob;
-    StudentBo studentBO = new StudentBOImpl();
+    StudentBo studentBO = (StudentBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.STUDENT);
 
     public void initialize() throws SQLException {
         loadAllStudent();

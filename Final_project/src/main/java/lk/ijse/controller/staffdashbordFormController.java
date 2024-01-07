@@ -14,6 +14,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.DashboardBO;
 import lk.ijse.bao.custom.impl.DashboardBOImpl;
 
@@ -38,7 +39,7 @@ public class staffdashbordFormController {
     public JFXButton btnLogOut;
     public JFXButton btnExam;
     public JFXButton btnPayment;
-    DashboardBO dashboardBO=new DashboardBOImpl();
+    DashboardBO dashboardBO= (DashboardBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.DASHBOARD);
 
     public void btnBackOnAction(ActionEvent actionEvent) throws IOException {
         Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/backStaffDashBoardForm.fxml"));

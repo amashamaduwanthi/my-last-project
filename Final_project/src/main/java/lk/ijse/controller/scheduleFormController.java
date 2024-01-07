@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.ScheduleBO;
 import lk.ijse.bao.custom.impl.ScheduleBOImpl;
 import lk.ijse.dao.Custom.HallDAO;
@@ -42,7 +43,7 @@ public class scheduleFormController {
     public TableColumn<?,?>  colDuration;
     public TableColumn<?,?>  colDescription;
     public TableColumn<?,?>  colHallId;
-    ScheduleBO scheduleBO=new ScheduleBOImpl();
+    ScheduleBO scheduleBO= (ScheduleBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.SCHEDULE);
 
     public void initialize(){
         loadCmbHallId();

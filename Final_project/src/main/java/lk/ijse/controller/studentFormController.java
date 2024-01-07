@@ -15,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lk.ijse.QR.GenerateQr;
+import lk.ijse.bao.custom.BOFactory;
+import lk.ijse.bao.custom.StaffBo;
 import lk.ijse.bao.custom.StudentBo;
 import lk.ijse.bao.custom.impl.StudentBOImpl;
 import lk.ijse.dao.Custom.Impl.AdminDAOImpl;
@@ -58,7 +60,8 @@ public class studentFormController {
    //StudentDAO studentDAOImpl= new StudentDAOImpl();
 
 
-   StudentBo studentBo=new StudentBOImpl();
+   StudentBo studentBo= (StudentBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.STUDENT);
+   StaffBo staffBo= (StaffBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.STAFF);
 
     //private studentModel studModel=new studentModel();
     public void initialize(){
@@ -72,12 +75,12 @@ public class studentFormController {
 
     private void loadUserName() {
         ObservableList<String> obList = FXCollections.observableArrayList();
-        var model= new AdminDAOImpl();
+
         try {
-            List<AdminDto> adminDtos = model.getAll();
+            List<AdminDto> adminDtos = staffBo.loadAllType();
             adminDtos.forEach(adminDto -> obList.add(adminDto.getUsername()));
             cmbUserName.setItems(obList);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

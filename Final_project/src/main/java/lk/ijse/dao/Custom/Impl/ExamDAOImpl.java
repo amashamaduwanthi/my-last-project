@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Exam;
 import lk.ijse.dao.Custom.ExamDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -45,7 +46,7 @@ public class ExamDAOImpl implements ExamDAO {
         }
     }
 @Override
-   public boolean save(ExamDto dto) throws SQLException {
+   public boolean save(Exam entity) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO Exams VALUES(?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -56,10 +57,10 @@ public class ExamDAOImpl implements ExamDAO {
 
 
         return pstm.executeUpdate() > 0;*/
-    return SQLUtil.execute("INSERT INTO Exams VALUES(?,?,?)",dto.getId(),dto.getName(),dto.getDate());
+    return SQLUtil.execute("INSERT INTO Exams VALUES(?,?,?)",entity.getId(),entity.getName(),entity.getDate());
     }
 @Override
-    public boolean update(ExamDto dto) throws SQLException {
+    public boolean update(Exam entity) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE Exams SET name=?,date=? WHERE examId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -68,7 +69,7 @@ public class ExamDAOImpl implements ExamDAO {
 
         pstm.setString(3, dto.getId());
         return pstm.executeUpdate() > 0;*/
-    return SQLUtil.execute("UPDATE Exams SET name=?,date=? WHERE examId=?",dto.getName(),dto.getDate(),dto.getId());
+    return SQLUtil.execute("UPDATE Exams SET name=?,date=? WHERE examId=?",entity.getName(),entity.getDate(),entity.getId());
     }
 
 
@@ -86,23 +87,25 @@ public class ExamDAOImpl implements ExamDAO {
     return SQLUtil.execute( "DELETE FROM Exams WHERE examId=?",id);
     }
 
-    public ExamDto search(String id) throws SQLException {
+    public Exam search(String id) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM Exams WHERE examId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1, id);
 
         ResultSet resultSet = pstm.executeQuery();*/
-        ExamDto dto = null;
+        Exam entity = null;
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Exams WHERE examId=?",id);
         if (resultSet.next()) {
-            dto = new ExamDto(
+           return new Exam(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3)
             );
+        }else {
+            return null;
         }
-        return dto;
+
     }
 @Override
     public boolean SaveResult(ResultDto dto1) throws SQLException {
@@ -120,7 +123,7 @@ public class ExamDAOImpl implements ExamDAO {
     return SQLUtil.execute("INSERT INTO StudentResult VALUES(?,?,?)",dto1.getStudentId(),dto1.getExamId(),dto1.getMark());
     }
 @Override
-    public List<ExamDto> getAll() throws SQLException {
+    public List<Exam> getAll() throws SQLException {
       /*  DbConnection dbConnection = DbConnection.getInstance();
         Connection connection = dbConnection.getConnection();
         String sql = "SELECT * FROM Exams";
@@ -128,10 +131,10 @@ public class ExamDAOImpl implements ExamDAO {
             PreparedStatement pstm = connection.prepareStatement(sql);
             ResultSet resultSet = pstm.executeQuery();*/
     ResultSet resultSet=SQLUtil.execute("SELECT * FROM Exams");
-            List<ExamDto> examList = new ArrayList<>();
+            List<Exam> examList = new ArrayList<>();
             while (resultSet.next()) {
 
-                examList.add(new ExamDto(
+                examList.add(new Exam(
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3)

@@ -1,14 +1,18 @@
 package lk.ijse.bao.custom.impl;
 
+import lk.ijse.Entity.Admin;
+import lk.ijse.Entity.Hall;
 import lk.ijse.bao.custom.ClassBO;
 import lk.ijse.dao.Custom.ClassDAO;
 import lk.ijse.dao.Custom.Impl.ClassDAOImpl;
 import lk.ijse.dao.Custom.Impl.HallDAOImpl;
 import lk.ijse.dao.DAOFactory;
+import lk.ijse.dto.AdminDto;
 import lk.ijse.dto.HallDto;
 import lk.ijse.dto.class2Dto;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassBOImpl implements ClassBO {
@@ -48,11 +52,22 @@ public class ClassBOImpl implements ClassBO {
 
     @Override
     public HallDto searchHall(String id) throws SQLException {
-        return hallDAOImpl.search(id);
+        Hall search= hallDAOImpl.search(id);
+        return new HallDto(search.getId(),search.getName(),search.getAvailability(),search.getCapacity());
     }
 
     @Override
     public List<HallDto> loadAllHallIds() throws SQLException {
-        return hallDAOImpl.getAll();
+        List<Hall> all = hallDAOImpl.getAll();
+        List<HallDto> hallDtos = new ArrayList<>();
+
+        for (Hall hall : all) {
+            hallDtos.add(new HallDto(
+                  hall.getId(),
+                    hall.getName(),
+                    hall.getAvailability(),
+                    hall.getCapacity()));
+        }
+        return hallDtos;
     }
 }

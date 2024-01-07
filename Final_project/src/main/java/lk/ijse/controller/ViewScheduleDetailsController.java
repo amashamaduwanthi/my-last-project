@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.ClassBO;
 import lk.ijse.bao.custom.ScheduleBO;
 import lk.ijse.bao.custom.impl.ClassBOImpl;
@@ -44,8 +45,8 @@ public class ViewScheduleDetailsController {
     public TableColumn<?, ?> colGrade;
     public TableColumn<?, ?> colDescription;
     public TableColumn<?, ?> colDuration;
-    private ScheduleBO scheduleBO = new ScheduleBOImpl();
-    private ClassBO classBO = new ClassBOImpl();
+    private ScheduleBO scheduleBO = (ScheduleBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.SCHEDULE);
+    private ClassBO classBO = (ClassBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.CLASS);
 
 
     public void initialize() {

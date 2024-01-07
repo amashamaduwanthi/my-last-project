@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Admin;
 import lk.ijse.dao.Custom.AdminDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -29,7 +30,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
     @Override
 
-    public boolean save(AdminDto dto) throws SQLException {
+    public boolean save(Admin entity) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="INSERT INTO Admin VALUES(?,?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -39,7 +40,7 @@ public class AdminDAOImpl implements AdminDAO {
         pstm.setString(4, dto.getType());
 
         return pstm.executeUpdate()>0;*/
-        return SQLUtil.execute("INSERT INTO Admin VALUES(?,?,?,?)",dto.getUsername(),dto.getPassword(),dto.getEmail(),dto.getType());
+        return SQLUtil.execute("INSERT INTO Admin VALUES(?,?,?,?)",entity.getUsername(),entity.getPassword(),entity.getEmail(),entity.getType());
     }
     @Override
 
@@ -87,22 +88,22 @@ public class AdminDAOImpl implements AdminDAO {
 
     @Override
 
-    public AdminDto search(String userName) throws SQLException {
+    public Admin search(String userName) throws SQLException {
         /*Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Admin WHERE userName=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1,userName);
         ResultSet resultSet = pstm.executeQuery();*/
-        AdminDto dto=null;
+        Admin entity =null;
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Admin WHERE userName=?",userName);
         if(resultSet.next()){
-            dto=new AdminDto(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4));
+            entity=new Admin(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4));
         }
-        return dto;
+        return entity;
     }
     @Override
 
-    public boolean update(AdminDto dto) throws SQLException {
+    public boolean update(Admin entity) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="UPDATE Admin SET userName=?,password=?,email=?,type=? WHERE userName=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -112,25 +113,26 @@ public class AdminDAOImpl implements AdminDAO {
         pstm.setString(4, dto.getType());
         pstm.setString(5, dto.getUsername());
         return pstm.executeUpdate()>0;*/
-        return SQLUtil.execute("UPDATE Admin SET userName=?,password=?,email=?,type=? WHERE userName=?",dto.getUsername(),dto.getPassword(),dto.getEmail(),dto.getType(),dto.getUsername());
+        return SQLUtil.execute("UPDATE Admin SET userName=?,password=?,email=?,type=? WHERE userName=?",entity.getUsername(),entity.getPassword(),entity.getEmail(),entity.getType(),entity.getUsername());
     }
 @Override
-    public List<AdminDto> getAll() throws SQLException {
+    public List<Admin> getAll() throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Admin";
         PreparedStatement pstm = connection.prepareStatement(sql);*/
-        List<AdminDto> adminDtos = new ArrayList<>();
+        List<Admin> entity = new ArrayList<>();
         ResultSet resultSet =SQLUtil.execute("SELECT * FROM Admin");
         while (resultSet.next()){
-            adminDtos.add(new AdminDto(
+           entity.add(new Admin(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4)
             ));
         }
-        return adminDtos;
+        return entity;
     }
+
 
 }
 

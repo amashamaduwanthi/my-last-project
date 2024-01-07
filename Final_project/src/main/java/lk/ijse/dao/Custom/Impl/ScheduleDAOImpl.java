@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Schedule;
 import lk.ijse.dao.Custom.ScheduleDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -64,22 +65,22 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         return SQLUtil.execute("DELETE FROM Schedule WHERE scheduleId=?",id);
     }
     @Override
-    public classDto search(String id) throws SQLException {
+    public Schedule search(String id) throws SQLException {
       /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Schedule WHERE ScheduleId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1,id);
         ResultSet resultSet = pstm.executeQuery();*/
-        classDto dto=null;
+       Schedule entity=null;
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Schedule WHERE ScheduleId=?",id);
         if(resultSet.next()){
-            dto=new classDto(
+            entity=new Schedule(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3)
             );
         }
-        return dto;
+        return entity;
     }
     @Override
     public boolean updateSchedule(classDto dto, String hallId) throws SQLException {
@@ -97,17 +98,17 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
     }
     @Override
-    public List<classDto> getAll() throws SQLException {
+    public List<Schedule> getAll() throws SQLException {
 
           /*  Connection connection = DbConnection.getInstance().getConnection();
             String sql="SELECT * FROM Schedule";
             PreparedStatement pstm = connection.prepareStatement(sql);
             ResultSet resultSet = pstm.executeQuery();*/
 
-            List<classDto> list = new ArrayList<>();
+            List<Schedule> list = new ArrayList<>();
             ResultSet resultSet=SQLUtil.execute("SELECT * FROM Schedule");
             while (resultSet.next()){
-                list.add(new classDto(
+                list.add(new Schedule(
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3)
@@ -118,12 +119,12 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     }
 
     @Override
-    public boolean save(classDto dto) throws SQLException, ClassNotFoundException {
+    public boolean save(Schedule entity) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean update(classDto dto) throws SQLException, ClassNotFoundException {
+    public boolean update(Schedule entity) throws SQLException, ClassNotFoundException {
         return false;
     }
 }

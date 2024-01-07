@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Lecturer;
 import lk.ijse.dao.Custom.LecturerDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -62,7 +63,7 @@ public class LecturerDAOImpl implements LecturerDAO {
 
     @Override
 
-    public boolean save(lecturerDto dto) throws SQLException {
+    public boolean save(Lecturer entity) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="INSERT INTO Lecturer VALUES(?,?,?,?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -73,7 +74,7 @@ public class LecturerDAOImpl implements LecturerDAO {
         pstm.setString(5, dto.getNic());
         pstm.setString(6, dto.getUniversity());
         return pstm.executeUpdate()>0;*/
-        return SQLUtil.execute("INSERT INTO Lecturer VALUES(?,?,?,?,?,?)",dto.getId(),dto.getName(),dto.getAddress(),dto.getTel(),dto.getNic(),dto.getUniversity());
+        return SQLUtil.execute("INSERT INTO Lecturer VALUES(?,?,?,?,?,?)",entity.getId(),entity.getName(),entity.getAddress(),entity.getTel(),entity.getNic(),entity.getUniversity());
 
     }
     @Override

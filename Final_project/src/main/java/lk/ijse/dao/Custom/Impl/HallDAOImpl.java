@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Hall;
 import lk.ijse.dao.Custom.HallDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -31,28 +32,28 @@ public class HallDAOImpl implements HallDAO {
         return count;
     }
 @Override
-    public List<HallDto> getAll() throws SQLException {
+    public List<Hall> getAll() throws SQLException {
 
-        List<HallDto> dto = new ArrayList<>();
+        List<Hall> entities = new ArrayList<>();
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Hall");
         while (resultSet.next()){
-            dto.add(new HallDto(
+            entities.add(new Hall(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4)
             ));
         }
-        return dto;
+        return entities;
     }
 
     @Override
-    public boolean save(HallDto dto) throws SQLException, ClassNotFoundException {
+    public boolean save(Hall entity) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean update(HallDto dto) throws SQLException, ClassNotFoundException {
+    public boolean update(Hall entity) throws SQLException, ClassNotFoundException {
         return false;
     }
 
@@ -73,7 +74,7 @@ public class HallDAOImpl implements HallDAO {
 
 
     @Override
-    public HallDto search(String id) throws SQLException {
+    public Hall search(String id) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Hall WHERE hallId=?";
         try {
@@ -82,17 +83,17 @@ public class HallDAOImpl implements HallDAO {
             HallDto dto=null;
             ResultSet resultSet = pstm.executeQuery();*/
         try {
-        HallDto dto=null;
+        Hall entity=null;
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Hall WHERE hallId=?",id);
         if (resultSet.next()){
-                dto= new HallDto(
+            entity= new Hall(
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4)
                 );
             }
-            return dto;
+            return entity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

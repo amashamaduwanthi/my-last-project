@@ -1,14 +1,19 @@
 package lk.ijse.bao.custom.impl;
 
+import lk.ijse.Entity.Admin;
+import lk.ijse.Entity.Hall;
+import lk.ijse.Entity.Schedule;
 import lk.ijse.bao.custom.ScheduleBO;
 import lk.ijse.dao.Custom.HallDAO;
 import lk.ijse.dao.Custom.Impl.HallDAOImpl;
 import lk.ijse.dao.Custom.Impl.ScheduleDAOImpl;
 import lk.ijse.dao.DAOFactory;
+import lk.ijse.dto.AdminDto;
 import lk.ijse.dto.HallDto;
 import lk.ijse.dto.classDto;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScheduleBOImpl implements ScheduleBO {
@@ -36,7 +41,8 @@ public class ScheduleBOImpl implements ScheduleBO {
 
     @Override
     public classDto searchSchedule(String id) throws SQLException {
-        return scheduleDAOImpl.search(id);
+        Schedule search= scheduleDAOImpl.search(id);
+        return new classDto(search.getId(),search.getDescription(),search.getDuration());
     }
 
     @Override
@@ -46,16 +52,37 @@ public class ScheduleBOImpl implements ScheduleBO {
 
     @Override
     public List<classDto> loadAllSchedule() throws SQLException {
-        return scheduleDAOImpl.getAll();
+        List<Schedule> all = scheduleDAOImpl.getAll();
+        List<classDto> classDtos = new ArrayList<>();
+
+        for (Schedule schedule : all) {
+           classDtos.add(new classDto(
+                   schedule.getId(),
+                    schedule.getDescription(),
+                   schedule.getDuration()));
+        }
+        return classDtos;
     }
 
     @Override
     public List<HallDto> loadAllHallIds() throws SQLException, ClassNotFoundException {
-        return hallDAOImpl.getAll();
+        List<Hall> all = hallDAOImpl.getAll();
+        List<HallDto> hallDtos = new ArrayList<>();
+
+        for (Hall hall : all) {
+            hallDtos.add(new HallDto(
+                    hall.getId(),
+                    hall.getName(),
+                    hall.getAvailability(),
+                    hall.getCapacity()));
+        }
+        return hallDtos;
+
     }
 
     @Override
     public HallDto searchHall(String id) throws SQLException, ClassNotFoundException {
-        return hallDAOImpl.search(id);
+        Hall search= hallDAOImpl.search(id);
+        return new HallDto(search.getId(),search.getName(),search.getAvailability(),search.getCapacity());
     }
 }

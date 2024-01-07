@@ -8,6 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.StaffBo;
 import lk.ijse.bao.custom.impl.StaffBOImpl;
 import lk.ijse.dao.Custom.AdminDAO;
@@ -28,7 +29,7 @@ public class staffFormController {
     public TableView<StaffTm> tblStaff;
     public TableColumn<? ,?> colStaffName;
     public TableColumn<? ,?> colEmail;
-    StaffBo staffBO=new StaffBOImpl();
+    StaffBo staffBO= (StaffBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.STAFF);
     public void initialize(){
         loadAllStaff();
         setCellValueFactory();

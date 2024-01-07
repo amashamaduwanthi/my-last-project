@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.LecturerBO;
 import lk.ijse.bao.custom.SubjectBO;
 import lk.ijse.bao.custom.impl.LecturerBOImpl;
@@ -46,7 +47,7 @@ public class subjectFormController {
     public TextField txtSubId;
     public Label lblsubId;
 
-    SubjectBO subjectBO=new SubjectBOImpl();
+    SubjectBO subjectBO= (SubjectBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.SUBJECT);
 
     public void initialize() throws ClassNotFoundException {
         loadAllLecturerIds();

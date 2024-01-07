@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.PaymentBO;
 import lk.ijse.bao.custom.impl.PaymentBOImpl;
 import lk.ijse.dao.Custom.PaymentDAO;
@@ -46,7 +47,7 @@ public class paymentFormController {
     public Label lblPaymentId;
     public TableColumn<?,?> colStuId;
     public TextField txtPaymentId;
-   PaymentBO paymentBO= new PaymentBOImpl();
+   PaymentBO paymentBO= (PaymentBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.PAYMENT);
 
 
 

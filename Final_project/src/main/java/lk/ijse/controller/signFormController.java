@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.bao.custom.BOFactory;
 import lk.ijse.bao.custom.StaffBo;
 import lk.ijse.bao.custom.impl.StaffBOImpl;
 import lk.ijse.dao.Custom.AdminDAO;
@@ -28,7 +29,7 @@ public class signFormController {
     public TextField txtEmail;
     public PasswordField pwPassword;
     public ComboBox cmbType;
-    StaffBo staffBO= new StaffBOImpl();
+    StaffBo staffBO= (StaffBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.STAFF);
 
     public void initialize() {
         loadAllTyes();
