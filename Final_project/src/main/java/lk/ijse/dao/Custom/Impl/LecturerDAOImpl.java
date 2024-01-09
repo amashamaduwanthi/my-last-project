@@ -3,11 +3,8 @@ package lk.ijse.dao.Custom.Impl;
 import lk.ijse.Entity.Lecturer;
 import lk.ijse.dao.Custom.LecturerDAO;
 import lk.ijse.dao.SQLUtil;
-import lk.ijse.db.DbConnection;
 import lk.ijse.dto.lecturerDto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -78,16 +75,16 @@ public class LecturerDAOImpl implements LecturerDAO {
 
     }
     @Override
-    public  lecturerDto search(String id) throws SQLException {
+    public Lecturer search(String id) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Lecturer WHERE lectId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1,id);
         ResultSet resultSet = pstm.executeQuery();*/
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Lecturer WHERE lectId=?",id);
-        lecturerDto dto=null;
+        Lecturer entity=null;
         if(resultSet.next()){
-            dto=new lecturerDto(
+            entity=new Lecturer(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
@@ -96,7 +93,7 @@ public class LecturerDAOImpl implements LecturerDAO {
                     resultSet.getString(6)
                     );
         }
-             return dto;
+             return entity;
     }
     @Override
     public boolean delete(String id) throws SQLException {
@@ -109,7 +106,7 @@ public class LecturerDAOImpl implements LecturerDAO {
 
     }
     @Override
-    public boolean update(lecturerDto dto) throws SQLException {
+    public boolean update(Lecturer dto) throws SQLException {
       /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="UPDATE Lecturer SET name=?,address=?,tel=?,NIC=?,university=? WHERE lectId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -125,17 +122,17 @@ public class LecturerDAOImpl implements LecturerDAO {
 
     }
     @Override
-    public List<lecturerDto> getAll() throws SQLException{
+    public List<Lecturer> getAll() throws SQLException{
 
           /*  Connection connection = DbConnection.getInstance().getConnection();
             String sql="SELECT * FROM Lecturer";
             PreparedStatement pstm = connection.prepareStatement(sql);
             List<lecturerDto> lecturerList = new ArrayList<>();
             ResultSet resultSet = pstm.executeQuery();*/
-        List<lecturerDto> lecturerList = new ArrayList<>();
+        List<Lecturer> lecturerList = new ArrayList<>();
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Lecturer");
             while (resultSet.next()){
-                lecturerList.add(new lecturerDto(
+                lecturerList.add(new Lecturer(
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),

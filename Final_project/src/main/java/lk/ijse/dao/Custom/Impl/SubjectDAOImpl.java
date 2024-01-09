@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Subject;
 import lk.ijse.dao.Custom.ScheduleDAO;
 import lk.ijse.dao.Custom.SubjectDAO;
 import lk.ijse.dao.SQLUtil;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class SubjectDAOImpl implements SubjectDAO {
     @Override
-    public  boolean update(subjectDto dto) throws SQLException {
+    public  boolean update(Subject entity) throws SQLException {
      /*   Connection connection = DbConnection.getInstance().getConnection();
         String sql="UPDATE Subject SET name=?,description=? WHERE subId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -24,25 +25,25 @@ public class SubjectDAOImpl implements SubjectDAO {
         pstm.setString(2, dto.getDescription());
         pstm.setString(3, dto.getId());
         return pstm.executeUpdate()>0;*/
-        return SQLUtil.execute("UPDATE Subject SET name=?,description=? WHERE subId=?",dto.getName(),dto.getDescription(),dto.getId());
+        return SQLUtil.execute("UPDATE Subject SET name=?,description=? WHERE subId=?",entity.getName(),entity.getDescription(),entity.getId());
     }
     @Override
-    public List<subjectDto> getAll() throws SQLException {
+    public List<Subject> getAll() throws SQLException {
         /*Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Subject";
         PreparedStatement pstm = connection.prepareStatement(sql);
         List<subjectDto> subjectdto = new ArrayList<>();
         ResultSet resultSet = pstm.executeQuery();*/
-        List<subjectDto> subjectdto = new ArrayList<>();
+        List<Subject> subject = new ArrayList<>();
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Subject");
         while (resultSet.next()){
-            subjectdto.add(new subjectDto(
+            subject.add(new Subject(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3)
             ));
         }
-        return subjectdto;
+        return subject;
     }
     @Override
     public  String generateNextId() throws SQLException {
@@ -73,7 +74,7 @@ public class SubjectDAOImpl implements SubjectDAO {
 
     @Override
 
-    public boolean save(subjectDto dto) throws SQLException {
+    public boolean save(Subject entity) throws SQLException {
      /*   Connection connection = DbConnection.getInstance().getConnection();
         String sql="INSERT INTO Subject VALUES(?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -81,7 +82,7 @@ public class SubjectDAOImpl implements SubjectDAO {
         pstm.setString(2, dto.getName());
         pstm.setString(3, dto.getDescription());
         return pstm.executeUpdate()>0;*/
-        return  SQLUtil.execute("INSERT INTO Subject VALUES(?,?,?)",dto.getId(),dto.getName(),dto.getDescription());
+        return  SQLUtil.execute("INSERT INTO Subject VALUES(?,?,?)",entity.getId(),entity.getName(),entity.getDescription());
 
     }
     @Override
@@ -95,20 +96,20 @@ public class SubjectDAOImpl implements SubjectDAO {
 
     }
     @Override
-    public subjectDto search(String id) throws SQLException {
+    public Subject search(String id) throws SQLException {
       /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Subject WHERE subId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1,id);*/
-        subjectDto subjectDto=null;
+        Subject subject=null;
        ResultSet resultSet=SQLUtil.execute("SELECT * FROM Subject WHERE subId=?",id);
         if(resultSet.next()){
             String sub_id=resultSet.getString(1);
             String name=resultSet.getString(2);
             String description=resultSet.getString(3);
-           subjectDto= new subjectDto(sub_id,name,description);
+           subject= new Subject(sub_id,name,description);
         }
-        return subjectDto;
+        return subject;
     }
 
 

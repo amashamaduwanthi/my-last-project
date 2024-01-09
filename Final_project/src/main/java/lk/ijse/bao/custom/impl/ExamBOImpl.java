@@ -2,6 +2,7 @@ package lk.ijse.bao.custom.impl;
 
 import lk.ijse.Entity.Admin;
 import lk.ijse.Entity.Exam;
+import lk.ijse.Entity.Student;
 import lk.ijse.bao.custom.ExamBO;
 import lk.ijse.dao.Custom.ExamDAO;
 import lk.ijse.dao.Custom.Impl.ExamDAOImpl;
@@ -78,11 +79,26 @@ public class ExamBOImpl implements ExamBO {
 
     @Override
     public List<studentDto> loadAllStudent() throws SQLException, ClassNotFoundException {
-        return studentDAOImpl.getAll();
+        List<Student> all = studentDAOImpl.getAll();
+        List<studentDto>studentDtos = new ArrayList<>();
+
+        for (Student student : all) {
+            studentDtos.add(new studentDto(
+                    student.getId(),
+                    student.getName(),
+                    student.getAddress(),
+                    student.getEmail(),
+                    student.getContactNo(),
+                    student.getGender(),
+                    student.getDateOfBirth()));
+        }
+        return studentDtos;
     }
+
 
     @Override
     public studentDto searchStudent(String id) throws SQLException, ClassNotFoundException {
-        return studentDAOImpl.search(id);
+        Student search= studentDAOImpl.search(id);
+        return new studentDto(search.getId(),search.getName(),search.getAddress(),search.getEmail(),search.getContactNo(),search.getGender(),search.getDateOfBirth());
     }
 }

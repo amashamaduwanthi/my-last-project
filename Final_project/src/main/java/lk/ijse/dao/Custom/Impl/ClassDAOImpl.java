@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Classes;
 import lk.ijse.dao.Custom.ClassDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -42,7 +43,7 @@ public class ClassDAOImpl implements ClassDAO {
     }
     @Override
 
-    public boolean save(class2Dto dto) throws SQLException {
+    public boolean save(Classes entity) throws SQLException {
       /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="INSERT INTO Class VALUES(?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -51,7 +52,7 @@ public class ClassDAOImpl implements ClassDAO {
 
 
         return pstm.executeUpdate()>0;*/
-        return SQLUtil.execute("INSERT INTO Class VALUES(?,?)",dto.getId(),dto.getGrade());
+        return SQLUtil.execute("INSERT INTO Class VALUES(?,?)",entity.getId(),entity.getGrade());
 
 
     }
@@ -67,7 +68,7 @@ public class ClassDAOImpl implements ClassDAO {
     }
     @Override
 
-    public boolean update(class2Dto dto) throws SQLException {
+    public boolean update(Classes entity) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql="UPDATE Class SET grade=? WHERE classId=?";
         try {
@@ -80,11 +81,11 @@ public class ClassDAOImpl implements ClassDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }*/
-        return SQLUtil.execute("UPDATE Class SET grade=? WHERE classId=?",dto.getGrade(),dto.getId());
+        return SQLUtil.execute("UPDATE Class SET grade=? WHERE classId=?",entity.getGrade(),entity.getId());
     }
     @Override
 
-    public class2Dto search(String classId) throws SQLException {
+    public Classes search(String classId) throws SQLException {
       /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT * FROM Class WHERE classId=?";
 
@@ -94,34 +95,34 @@ public class ClassDAOImpl implements ClassDAO {
             class2Dto dto=null;
             ResultSet resultSet = pstm.executeQuery();*/
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Class WHERE classId=?",classId);
-        class2Dto dto=null;
+        Classes entity=null;
             if (resultSet.next()){
-                dto= new class2Dto(
+               entity= new Classes(
                         resultSet.getString(1),
                         resultSet.getString(2)
 
                 );
             }
 
-        return dto;
+        return entity;
     }
     @Override
 
-    public List<class2Dto> getAll() throws SQLException {
+    public List<Classes> getAll() throws SQLException {
 
            /* Connection connection = DbConnection.getInstance().getConnection();
             PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Class");
             ResultSet resultSet = pstm.executeQuery();*/
             ResultSet resultSet=SQLUtil.execute("SELECT * FROM Class");
-            List<class2Dto> class2Dtos = new ArrayList<>();
+            List<Classes>classes = new ArrayList<>();
             while (resultSet.next()) {
-                class2Dto dto = new class2Dto(
+                Classes classes1 = new Classes(
                         resultSet.getString(1),
                         resultSet.getString(2)
                 );
-                class2Dtos.add(dto);
+               classes.add(classes1);
             }
-            return class2Dtos;
+            return classes;
 
     }
 }

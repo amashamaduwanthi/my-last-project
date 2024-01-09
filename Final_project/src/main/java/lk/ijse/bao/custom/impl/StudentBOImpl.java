@@ -1,5 +1,8 @@
 package lk.ijse.bao.custom.impl;
 
+import lk.ijse.Entity.Parent;
+import lk.ijse.Entity.Registration;
+import lk.ijse.Entity.Student;
 import lk.ijse.bao.custom.StudentBo;
 import lk.ijse.dao.Custom.Impl.ParentDAOImpl;
 import lk.ijse.dao.Custom.Impl.RegisterDAOImpl;
@@ -15,6 +18,7 @@ import lk.ijse.dto.studentDto;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentBOImpl implements StudentBo {
@@ -44,15 +48,15 @@ public class StudentBOImpl implements StudentBo {
             connection = DbConnection.getInstance().getConnection();
             connection.setAutoCommit(false);
 
-            boolean isSaved = studentDAO.save(dto);
+            boolean isSaved = studentDAO.save(new Student(dto.getId(),dto.getName(),dto.getAddress(),dto.getEmail(),dto.getContactNo(),dto.getGender(),dto.getDateOfBirth()));
             System.out.println(isSaved);
             if (isSaved) {
 
-                boolean isAdded = parentDAO.save(parentDto);
+                boolean isAdded = parentDAO.save(new Parent(dto.getId(),dto.getName(),dto.getContactNo(),dto.getId()));
                 System.out.println(isAdded);
                 if (isAdded) {
 
-                    boolean isRegistered = registerDAO.save(registrationDto);
+                    boolean isRegistered = registerDAO.save(new Registration(registrationDto.getRegId(),registrationDto.getName(),registrationDto.getEmail(),registrationDto.getDate(),registrationDto.getParentId(),registrationDto.getUserName()));
                     System.out.println(isRegistered);
                     if (isRegistered) {
                         connection.commit();
@@ -72,28 +76,44 @@ public class StudentBOImpl implements StudentBo {
 
     @Override
     public ParentDto searchParent(String parentId) throws SQLException, ClassNotFoundException {
-        return parentDAO.search(parentId);
+        Parent parent = parentDAO.search(parentId);
+        return new ParentDto(parent.getParentId(),parent.getParentName(),parent.getParentContactNo(),parent.getStuId());
     }
 
     @Override
     public List<studentDto> loadAllStudent() throws SQLException, ClassNotFoundException {
-        return studentDAO.getAll();
+        List<Student> all = studentDAO.getAll();
+        List<studentDto>studentDtos = new ArrayList<>();
+
+        for (Student student : all) {
+            studentDtos.add(new studentDto(
+                    student.getId(),
+                    student.getName(),
+                    student.getAddress(),
+                    student.getEmail(),
+                    student.getContactNo(),
+                    student.getGender(),
+                    student.getDateOfBirth()));
+        }
+        return studentDtos;
     }
+
 
     @Override
     public boolean SaveStudent(String id, String name, String address, String email, int contactNo, String gender, String dateOfBirth) throws SQLException, ClassNotFoundException {
         studentDto dto = new studentDto(id,name,address,email,contactNo,gender,dateOfBirth);
-        return studentDAO.save(dto);
+        return studentDAO.save(new Student(dto.getId(),dto.getName(),dto.getAddress(),dto.getEmail(),dto.getContactNo(),dto.getGender(), dto.getDateOfBirth()));
     }
 
     @Override
     public studentDto searchStudent(String id) throws SQLException, ClassNotFoundException {
-        return studentDAO.search(id);
+        Student search= studentDAO.search(id);
+        return new studentDto(search.getId(),search.getName(),search.getAddress(),search.getEmail(),search.getContactNo(),search.getGender(),search.getDateOfBirth());
     }
 
     @Override
     public boolean updateStudent(studentDto dto) throws SQLException, ClassNotFoundException {
-        return studentDAO.update(dto);
+        return studentDAO.update(new Student(dto.getId(),dto.getName(),dto.getAddress(),dto.getEmail(),dto.getContactNo(),dto.getGender(),dto.getDateOfBirth()));
     }
 
     @Override

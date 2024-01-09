@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom;
 
+import lk.ijse.Entity.Classes;
 import lk.ijse.dao.CrudDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.class2Dto;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ClassDAO extends CrudDAO<class2Dto> {
+public interface ClassDAO extends CrudDAO<Classes> {
   /*  String generateNxtClassId() throws SQLException ;
 
     boolean saveClass(class2Dto dto) throws SQLException;

@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Student;
 import lk.ijse.dao.Custom.StudentDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -14,14 +15,14 @@ import java.util.List;
 
 public class StudentDAOImpl implements StudentDAO {
 @Override
-    public  List<studentDto> getAll() throws SQLException {
+    public  List<Student> getAll() throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM Student";
         PreparedStatement pstm = connection.prepareStatement(sql);*/
-        List<studentDto> studentDtos = new ArrayList<>();
+        List<Student> student = new ArrayList<>();
         ResultSet resultSet= SQLUtil.execute("SELECT * FROM Student");
         while (resultSet.next()) {
-            studentDtos.add(new studentDto(
+            student.add(new Student(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
@@ -31,10 +32,10 @@ public class StudentDAOImpl implements StudentDAO {
                     resultSet.getString(7)
             ));
         }
-        return studentDtos;
+        return student;
     }
     @Override
-    public boolean save(studentDto dto) throws SQLException {
+    public boolean save(Student entity) throws SQLException {
 
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO Student VALUES(?,?,?,?,?,?,?)";
@@ -48,16 +49,16 @@ public class StudentDAOImpl implements StudentDAO {
         pstm.setString(7, dateOfBirth);
 
         return pstm.executeUpdate() > 0;*/
-        return SQLUtil.execute("INSERT INTO Student VALUES(?,?,?,?,?,?,?)",dto.getId(),dto.getName(),dto.getAddress(),dto.getEmail(),dto.getContactNo(),dto.getGender(),dto.getDateOfBirth());
+        return SQLUtil.execute("INSERT INTO Student VALUES(?,?,?,?,?,?,?)",entity.getId(),entity.getName(),entity.getAddress(),entity.getEmail(),entity.getContactNo(),entity.getGender(),entity.getDateOfBirth());
     }
     @Override
-    public  studentDto search(String id) throws SQLException {
+    public  Student search(String id) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM Student WHERE stuId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1, id);
         ResultSet resultSet = pstm.executeQuery();*/
-        studentDto dto = null;
+        Student entity = null;
         ResultSet resultSet=SQLUtil.execute( "SELECT * FROM Student WHERE stuId=?",id);
         if (resultSet.next()) {
             String stu_id = resultSet.getString(1);
@@ -68,13 +69,13 @@ public class StudentDAOImpl implements StudentDAO {
             String gender = resultSet.getString(6);
             String dateOfBirth = resultSet.getString(7);
 
-            dto = new studentDto(stu_id, name, address, email, contactNo, gender, dateOfBirth);
+            entity = new Student(stu_id, name, address, email, contactNo, gender, dateOfBirth);
 
         }
-        return dto;
+        return entity;
     }
     @Override
-    public boolean update(studentDto dto) throws SQLException {
+    public boolean update(Student student) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE Student SET name=?,address=?,email=? ,contactNo=?,gender=?,dateOfBirth=?WHERE stuId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -86,7 +87,7 @@ public class StudentDAOImpl implements StudentDAO {
         pstm.setString(6, dto.getDateOfBirth());
         pstm.setString(7, dto.getId());
         return pstm.executeUpdate() > 0;*/
-        return SQLUtil.execute("UPDATE Student SET name=?,address=?,email=? ,contactNo=?,gender=?,dateOfBirth=?WHERE stuId=?",dto.getName(),dto.getAddress(),dto.getEmail(),dto.getContactNo(),dto.getGender(),dto.getDateOfBirth(),dto.getId());
+        return SQLUtil.execute("UPDATE Student SET name=?,address=?,email=? ,contactNo=?,gender=?,dateOfBirth=?WHERE stuId=?",student.getName(),student.getAddress(),student.getEmail(),student.getContactNo(),student.getGender(),student.getDateOfBirth(),student.getId());
     }
     @Override
     public boolean delete(String id) throws SQLException {

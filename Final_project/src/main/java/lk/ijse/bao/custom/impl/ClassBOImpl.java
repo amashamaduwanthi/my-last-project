@@ -1,6 +1,7 @@
 package lk.ijse.bao.custom.impl;
 
 import lk.ijse.Entity.Admin;
+import lk.ijse.Entity.Classes;
 import lk.ijse.Entity.Hall;
 import lk.ijse.bao.custom.ClassBO;
 import lk.ijse.dao.Custom.ClassDAO;
@@ -26,7 +27,7 @@ public class ClassBOImpl implements ClassBO {
 
     @Override
     public boolean saveClass(class2Dto dto) throws SQLException {
-        return classDAOImpl.save(new class2Dto(dto.getId(),dto.getGrade()));
+        return classDAOImpl.save(new Classes(dto.getId(),dto.getGrade()));
 
     }
 
@@ -37,17 +38,26 @@ public class ClassBOImpl implements ClassBO {
 
     @Override
     public boolean updateClass(class2Dto dto) throws SQLException {
-        return classDAOImpl.update(new class2Dto(dto.getId(),dto.getGrade()));
+        return classDAOImpl.update(new Classes(dto.getId(),dto.getGrade()));
     }
 
     @Override
     public class2Dto searchClass(String classId) throws SQLException {
-        return classDAOImpl.search(classId);
+        Classes search= classDAOImpl.search(classId);
+        return  new class2Dto(search.getId(),search.getGrade());
     }
 
     @Override
     public List<class2Dto> loadAllclassIds() throws SQLException {
-        return classDAOImpl.getAll();
+        List<Classes> all = classDAOImpl.getAll();
+        List<class2Dto> class2Dtos = new ArrayList<>();
+
+        for (Classes classes : all) {
+            class2Dtos.add(new class2Dto(
+                    classes.getId(),
+                    classes.getGrade()));
+        }
+        return class2Dtos;
     }
 
     @Override

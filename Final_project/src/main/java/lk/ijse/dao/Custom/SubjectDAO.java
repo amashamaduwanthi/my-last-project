@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom;
 
+import lk.ijse.Entity.Subject;
 import lk.ijse.dao.CrudDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.SubjectLecturerDto;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface SubjectDAO extends CrudDAO<subjectDto> {
+public interface SubjectDAO extends CrudDAO<Subject> {
   /*  boolean UpdateSubject(subjectDto dto) throws SQLException ;
      List<subjectDto> loadAllSubject() throws SQLException;
 

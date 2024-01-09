@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom;
 
+import lk.ijse.Entity.Student;
 import lk.ijse.dao.CrudDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.studentDto;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface StudentDAO extends CrudDAO<studentDto> {
+public interface StudentDAO extends CrudDAO<Student> {
     /* List<studentDto> loadAllStudent() throws SQLException ;
 
     boolean SaveStudent(String id, String name, String address, String email, int contactNo, String gender, String dateOfBirth) throws SQLException ;

@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom;
 
+import lk.ijse.Entity.Parent;
 import lk.ijse.dao.CrudDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.ParentDto;
@@ -9,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface ParentDAO extends CrudDAO<ParentDto> {
+public interface ParentDAO extends CrudDAO<Parent> {
    //  boolean SaveStudent(ParentDto parentDto) throws SQLException ;
 
  //    ParentDto searchParent(String parentId) throws SQLException ;

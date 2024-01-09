@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Payment;
 import lk.ijse.dao.Custom.PaymentDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -41,7 +42,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
     }
     @Override
-    public boolean save(PayementDto dto) throws SQLException {
+    public boolean save(Payment entity) throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO Classfee VALUES(?,?,?,?,?,?)";
         java.sql.PreparedStatement stm = connection.prepareStatement(sql);
@@ -53,10 +54,10 @@ public class PaymentDAOImpl implements PaymentDAO {
         stm.setObject(6, dto.getStuId());
 
         return stm.executeUpdate() > 0;*/
-        return SQLUtil.execute("INSERT INTO Classfee VALUES(?,?,?,?,?,?)",dto.getId(),dto.getAmount(),dto.getDate(),dto.getStatus(),dto.getClassId(),dto.getStuId());
+        return SQLUtil.execute("INSERT INTO Classfee VALUES(?,?,?,?,?,?)",entity.getId(),entity.getAmount(),entity.getDate(),entity.getStatus(),entity.getClassId(),entity.getStuId());
     }
     @Override
-    public boolean update(PayementDto dto) throws SQLException {
+    public boolean update(Payment entity) throws SQLException {
       /*  Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE Classfee SET amount=?,date=?,status=?,classId=?,stuId=? WHERE classfeeId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -68,7 +69,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         pstm.setString(6, dto.getId());
 
         return pstm.executeUpdate() > 0;*/
-        return SQLUtil.execute("UPDATE Classfee SET amount=?,date=?,status=?,classId=?,stuId=? WHERE classfeeId=?",dto.getAmount(),dto.getDate(),dto.getStatus(),dto.getClassId(),dto.getStuId(),dto.getId());
+        return SQLUtil.execute("UPDATE Classfee SET amount=?,date=?,status=?,classId=?,stuId=? WHERE classfeeId=?",entity.getAmount(),entity.getDate(),entity.getStatus(),entity.getClassId(),entity.getStuId(),entity.getId());
     }
 
     @Override
@@ -77,14 +78,14 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public PayementDto search(String id) throws SQLException {
+    public Payment search(String id) throws SQLException {
      /*   Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM Classfee WHERE classfeeId=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1, id);
 
         ResultSet resultSet = pstm.executeQuery();*/
-        PayementDto dto = null;
+        Payment entity = null;
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Classfee WHERE classfeeId=?",id);
         if (resultSet.next()) {
 
@@ -94,19 +95,19 @@ public class PaymentDAOImpl implements PaymentDAO {
             String status = resultSet.getString(4);
             String classId = resultSet.getString(5);
             String stuId = resultSet.getString(6);
-             dto=new PayementDto(payId,amount,date,status,classId,stuId);
+             entity=new Payment(payId,amount,date,status,classId,stuId);
 
 
         }
-        return dto;
+        return entity;
     }
     @Override
-    public List<PayementDto> getAll() throws SQLException {
+    public List<Payment> getAll() throws SQLException {
        /* Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM Classfee";
         PreparedStatement pstm = connection.prepareStatement(sql);
         ResultSet resultSet = pstm.executeQuery();*/
-        ArrayList<PayementDto> dtos = new ArrayList<>();
+        ArrayList<Payment> payments= new ArrayList<>();
         ResultSet resultSet=SQLUtil.execute("SELECT * FROM Classfee");
         while (resultSet.next()){
             String payId = resultSet.getString(1);
@@ -115,8 +116,8 @@ public class PaymentDAOImpl implements PaymentDAO {
             String status = resultSet.getString(4);
             String classId = resultSet.getString(5);
             String stuId = resultSet.getString(6);
-            dtos.add(new PayementDto(payId,amount,date,status,classId,stuId));
+            payments.add(new Payment(payId,amount,date,status,classId,stuId));
         }
-        return dtos;
+        return payments;
     }
 }

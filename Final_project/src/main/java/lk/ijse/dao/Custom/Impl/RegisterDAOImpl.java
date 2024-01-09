@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom.Impl;
 
+import lk.ijse.Entity.Registration;
 import lk.ijse.dao.Custom.RegisterDAO;
 import lk.ijse.dao.SQLUtil;
 import lk.ijse.db.DbConnection;
@@ -12,18 +13,18 @@ import java.util.List;
 
 public class RegisterDAOImpl implements RegisterDAO {
     @Override
-    public List<RegistrationDto> getAll() throws SQLException, ClassNotFoundException {
+    public List<Registration> getAll() throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public boolean save(RegistrationDto registrationDto) throws SQLException {
+    public boolean save(Registration entity) throws SQLException {
 
-        return SQLUtil.execute("INSERT INTO Registration VALUES(?,?,?,?,?,?)",registrationDto.getRegId(),registrationDto.getName(),registrationDto.getEmail(),registrationDto.getDate(),registrationDto.getParentId(),registrationDto.getUserName());
+        return SQLUtil.execute("INSERT INTO Registration VALUES(?,?,?,?,?,?)",entity.getRegId(),entity.getName(),entity.getEmail(),entity.getDate(),entity.getParentId(),entity.getUserName());
     }
 
     @Override
-    public boolean update(RegistrationDto dto) throws SQLException, ClassNotFoundException {
+    public boolean update(Registration entity) throws SQLException, ClassNotFoundException {
         return false;
     }
 
@@ -43,7 +44,7 @@ public class RegisterDAOImpl implements RegisterDAO {
     }
 
     @Override
-    public RegistrationDto search(String id) throws SQLException, ClassNotFoundException {
+    public Registration search(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
 }

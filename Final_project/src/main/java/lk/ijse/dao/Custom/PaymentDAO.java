@@ -1,5 +1,6 @@
 package lk.ijse.dao.Custom;
 
+import lk.ijse.Entity.Payment;
 import lk.ijse.dao.CrudDAO;
 import lk.ijse.db.DbConnection;
 import lk.ijse.dto.PayementDto;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface PaymentDAO extends CrudDAO<PayementDto> {
+public interface PaymentDAO extends CrudDAO<Payment> {
   /*  String generateNxtPaymentId() throws SQLException;
 
     String ChangeId(String classfeeId);
